@@ -1,0 +1,305 @@
+:root {
+  --mesh-cream: radial-gradient(at 12% 18%, #F6DCCB 0px, transparent 50%), radial-gradient(at 88% 8%, #EFE5D3 0px, transparent 50%), radial-gradient(at 75% 88%, #EBD6C8 0px, transparent 55%), radial-gradient(at 8% 92%, #E6EADC 0px, transparent 55%), #FAF9F5;
+  --mesh-terracotta: radial-gradient(at 20% 15%, #F0B79C 0px, transparent 60%), radial-gradient(at 85% 25%, #F7D5C2 0px, transparent 60%), radial-gradient(at 60% 90%, #E4A98F 0px, transparent 60%), radial-gradient(at 5% 80%, #F3E2D3 0px, transparent 60%), #F5E6DA;
+  --mesh-sand: radial-gradient(at 18% 22%, #EFE2CC 0px, transparent 50%), radial-gradient(at 82% 12%, #F6EEE0 0px, transparent 50%), radial-gradient(at 70% 85%, #E7D6BC 0px, transparent 55%), radial-gradient(at 10% 88%, #F2E9DA 0px, transparent 50%), #F7F1E6;
+  --mesh-sage: radial-gradient(at 15% 20%, #D5DEC9 0px, transparent 50%), radial-gradient(at 85% 15%, #EAEFDF 0px, transparent 50%), radial-gradient(at 65% 88%, #C8D4BA 0px, transparent 55%), radial-gradient(at 8% 85%, #F1EFE2 0px, transparent 50%), #EEF1E6;
+  --mesh-mist: radial-gradient(at 18% 18%, #D3DDE6 0px, transparent 50%), radial-gradient(at 85% 10%, #E8EEF2 0px, transparent 50%), radial-gradient(at 72% 88%, #CAD6E0 0px, transparent 55%), radial-gradient(at 8% 90%, #F0EDE6 0px, transparent 50%), #EDF1F4;
+  --mesh-lilac: radial-gradient(at 15% 22%, #DDD5E8 0px, transparent 50%), radial-gradient(at 88% 12%, #F0EAF3 0px, transparent 50%), radial-gradient(at 70% 88%, #E8D2D8 0px, transparent 55%), radial-gradient(at 8% 88%, #F3E8E0 0px, transparent 50%), #F2EEF5;
+
+  /* Warm, paper-like surfaces with a restrained terracotta accent. */
+  --bg: #f6f4ef;
+  --surface: #fffefa;
+  --surface-2: #efede6;
+  --border: #dfdbd1;
+  --text: #2B2622;
+  --muted: #51443c;
+  --accent: #a14d35;
+  --accent-text: #fffefa;
+  --danger: #a63835;
+  --ok: #366b50;
+  --tap: 48px;
+  --radius: 16px;
+  color-scheme: light;
+  font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  font-size: 16px;
+  line-height: 1.5;
+  color: var(--text);
+  background: var(--bg);
+  -webkit-tap-highlight-color: transparent;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  min-height: 100%;
+  background: var(--mesh-cream);
+  background-attachment: fixed;
+}
+
+button,
+input,
+select,
+textarea {
+  font: inherit;
+  color: inherit;
+}
+
+button {
+  min-height: var(--tap);
+  padding: 0 18px;
+  border-radius: var(--radius);
+  border: 1px solid var(--border);
+  background: var(--surface);
+  cursor: pointer;
+  transition: background-color 150ms ease, border-color 150ms ease;
+  touch-action: manipulation;
+}
+
+button.primary {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: var(--accent-text);
+  font-weight: 600;
+}
+
+button:not(:disabled):hover {
+  border-color: #c9bdb0;
+  background-color: var(--surface-2);
+}
+
+button.primary:not(:disabled):hover {
+  background-color: #893e2b;
+  border-color: #893e2b;
+}
+
+button:disabled {
+  opacity: 0.5;
+  cursor: default;
+}
+
+button:focus-visible,
+textarea:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+h1,
+h2,
+h3 {
+  margin: 0;
+  line-height: 1.25;
+}
+
+h1 {
+  font-family: Georgia, 'Times New Roman', serif;
+  font-size: 2rem;
+  font-weight: 400;
+  letter-spacing: -0.035em;
+}
+
+h2 { font-size: 1.2rem; }
+
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 18px;
+  box-shadow: 0 1px 2px rgb(55 45 30 / 0.025);
+}
+
+.muted {
+  color: var(--muted);
+}
+
+.small {
+  font-size: 0.85rem;
+}
+
+input[type='text'],
+input[type='number'],
+input[type='time'],
+input[type='date'],
+input:not([type]),
+select,
+textarea {
+  min-height: var(--tap);
+  padding: 0 12px;
+  border-radius: var(--radius);
+  border: 1px solid var(--border);
+  background: var(--surface);
+  width: 100%;
+  min-width: 0;
+}
+
+input::placeholder, textarea::placeholder { color: var(--muted); opacity: 1; }
+
+input:focus,
+select:focus {
+  outline: 2px solid var(--accent);
+  outline-offset: -1px;
+}
+
+.stack {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.spread {
+  justify-content: space-between;
+}
+
+.grow {
+  flex: 1;
+  min-width: 0;
+}
+
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.chip {
+  min-height: 40px;
+  padding: 0 14px;
+  border-radius: 999px;
+  font-size: 0.9rem;
+  background: transparent;
+  color: var(--muted);
+}
+
+.chip.on {
+  background: var(--surface-2);
+  color: var(--text);
+  border-color: var(--accent);
+}
+
+.seg {
+  display: flex;
+  gap: 4px;
+  padding: 4px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+}
+
+.seg button {
+  flex: 1;
+  border: none;
+  background: transparent;
+  color: var(--muted);
+  min-height: 44px;
+  padding: 0 8px;
+}
+
+.seg button.on {
+  background: var(--surface-2);
+  color: var(--text);
+}
+
+.section-title {
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.09em;
+  color: var(--muted);
+  margin: 0;
+}
+
+.link {
+  background: none;
+  border: none;
+  color: var(--accent);
+  padding: 0 8px;
+}
+
+.icon-btn {
+  min-width: var(--tap);
+  padding: 0;
+}
+
+.bar {
+  height: 6px;
+  border-radius: 3px;
+  background: var(--surface-2);
+  overflow: hidden;
+}
+
+.bar > i {
+  display: block;
+  height: 100%;
+  background: var(--accent);
+}
+
+p {
+  margin: 0;
+}
+
+dialog.sheet {
+  width: min(560px, calc(100vw - 24px));
+  max-height: calc(100dvh - 24px);
+  padding: 16px;
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  background: var(--surface);
+  color: var(--text);
+}
+
+dialog.sheet::backdrop {
+  background: rgb(45 38 31 / 0.42);
+}
+
+.lbl {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.danger {
+  color: var(--danger);
+}
+
+.num {
+  font-variant-numeric: tabular-nums;
+}
+
+h1 {
+  font-size: 1.5rem;
+}
+
+h2 {
+  font-size: 1.15rem;
+}
+
+/* Keep motion optional and keyboard focus visible across the interface. */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { transition-duration: 0.01ms !important; scroll-behavior: auto !important; }
+}
+
+[data-theme="dark"] {
+  color-scheme: dark;
+  --bg: #262624; --surface: #302f2d; --surface-2: #403b37; --border: #615b54;
+  --text: #f5eee6; --muted: #d1c5b9; --accent: #e7ae93; --accent-text: #25201d; --danger: #ffb5aa; --ok: #aed3b4;
+  --mesh-cream: radial-gradient(at 12% 18%, #3A2E28 0px, transparent 50%), radial-gradient(at 88% 8%, #2F2B27 0px, transparent 50%), radial-gradient(at 75% 88%, #3B2D26 0px, transparent 55%), radial-gradient(at 8% 92%, #2A2E29 0px, transparent 55%), #262624;
+  --mesh-terracotta: radial-gradient(at 20% 15%, #5a3c32 0px, transparent 60%), radial-gradient(at 85% 25%, #44352f 0px, transparent 60%), radial-gradient(at 60% 90%, #51362d 0px, transparent 60%), #302c29;
+  --mesh-sand: radial-gradient(at 18% 22%, #453e33, transparent 60%), #302e29;
+  --mesh-sage: radial-gradient(at 15% 20%, #394236, transparent 60%), #2c302b;
+  --mesh-mist: radial-gradient(at 18% 18%, #35414a, transparent 60%), #292e32;
+  --mesh-lilac: radial-gradient(at 15% 22%, #453b4a, transparent 60%), #302c32;
+}
+[data-theme="dark"] button.primary:not(:disabled):hover { background: #f1bca5; border-color: #f1bca5; }
+
+/* The reveal is animated explicitly; disable the browser's default crossfade. */
+::view-transition-old(root), ::view-transition-new(root) { animation: none; mix-blend-mode: normal; }
+::view-transition-new(root) { z-index: 2; }

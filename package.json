@@ -1,0 +1,62 @@
+{
+  "name": "life-tracker",
+  "private": true,
+  "version": "0.0.1",
+  "type": "module",
+  "main": "electron/main.cjs",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "check": "svelte-check --tsconfig ./tsconfig.json",
+    "test": "vitest run",
+    "icons": "node tools/gen-icons.mjs",
+    "icon:ico": "node tools/gen-ico.mjs",
+    "deploy": "node tools/deploy.mjs",
+    "build:desktop": "vite build --base=./ && electron-builder --win"
+  },
+  "devDependencies": {
+    "@sveltejs/vite-plugin-svelte": "^7.3.1",
+    "@tsconfig/svelte": "^5.0.8",
+    "@types/node": "^26.6.6",
+    "electron": "^45.3.2",
+    "electron-builder": "^26.18.0",
+    "fake-indexeddb": "^6.2.7",
+    "svelte": "^5.57.3",
+    "svelte-check": "^4.7.8",
+    "typescript": "^6.0.3",
+    "vite": "^8.3.6",
+    "vite-plugin-pwa": "^2.0.0",
+    "vitest": "^5.1.0",
+    "dexie": "^4.4.7"
+  },
+  "build": {
+    "appId": "com.aleks.lifetracker",
+    "productName": "Life Tracker",
+    "directories": {
+      "output": "release",
+      "buildResources": "build"
+    },
+    "files": [
+      "web-dist/**/*",
+      "electron/**/*",
+      "package.json",
+      "!**/*.map"
+    ],
+    "win": {
+      "target": [
+        "nsis",
+        "portable"
+      ],
+      "icon": "build/icon.ico"
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true,
+      "artifactName": "LifeTracker-Setup-${version}.${ext}"
+    },
+    "portable": {
+      "artifactName": "LifeTracker-Portable-${version}.${ext}"
+    }
+  }
+}

@@ -1,0 +1,48 @@
+name: CI
+
+# Every push: type check, tests, build. The site is published from the developer's
+# computer with `npm run deploy` (no tokens). Optional: if the secret
+# PAGES_DEPLOY_TOKEN (fine-grained PAT, Contents: Read and write on the public site
+# repo only) is set, this workflow also publishes web-dist/ to <owner>/life.
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+env:
+  DEPLOY_TOKEN: ${{ secrets.PAGES_DEPLOY_TOKEN }}
+  PAGES_REPO: ${{ vars.PAGES_REPO || 'life' }}
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: lts/*
+          cache: npm
+
+      - run: npm ci
+      - run: npm run check
+      - run: npm test
+      - run: npm run build
+        env:
+          BASE_PATH: /${{ env.PAGES_REPO }}/
+
+      - name: Push to the public site repo
+        if: env.DEPLOY_TOKEN != ''
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          personal_token: ${{ secrets.PAGES_DEPLOY_TOKEN }}
+          external_repository: ${{ github.repository_owner }}/${{ env.PAGES_REPO }}
+          publish_branch: main
+          publish_dir: web-dist
+          force_orphan: true
+          enable_jekyll: false
+          commit_message: deploy

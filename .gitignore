@@ -1,0 +1,12 @@
+node_modules/
+dist/
+dev-dist/
+release/
+build/
+.npm-cache/
+*.local
+.DS_Store
+.vscode/
+.idea/
+.claude/
+web-dist/
