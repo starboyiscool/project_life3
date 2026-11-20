@@ -36,8 +36,33 @@ html,
 body {
   margin: 0;
   min-height: 100%;
+}
+
+/* Stable gutter: the page never jumps sideways when a scrollbar appears or disappears. */
+html {
+  scrollbar-gutter: stable;
+}
+
+/* The mesh sits on its own fixed layer instead of background-attachment: fixed,
+   which forces a full repaint on every scroll. */
+body {
+  position: relative;
+  background: transparent;
+}
+
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: -1;
   background: var(--mesh-cream);
-  background-attachment: fixed;
+  pointer-events: none;
+  will-change: transform;
+}
+
+/* Keep-alive panes rely on [hidden]; no display rule may override it. */
+[hidden] {
+  display: none !important;
 }
 
 button,

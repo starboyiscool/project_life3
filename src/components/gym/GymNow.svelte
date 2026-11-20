@@ -33,7 +33,8 @@
 </script>
 
 {#if !gym.loaded}
-  <p class="muted">…</p>
+  <!-- neutral placeholder of fixed height instead of a blinking "…" -->
+  <div class="card placeholder" role="status" aria-label="Загрузка"></div>
 {:else if gym.data.active}
   <WorkoutView workout={gym.data.active} />
 {:else}
@@ -99,6 +100,10 @@
 {/if}
 
 <style>
+  .placeholder {
+    min-height: 260px;
+  }
+
   .tag {
     font-size: 0.75rem;
     color: var(--muted);

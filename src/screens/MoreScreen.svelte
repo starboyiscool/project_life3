@@ -5,6 +5,7 @@
   import DoneScreen from './DoneScreen.svelte';
   import DataScreen from './DataScreen.svelte';
   import SettingsScreen from './SettingsScreen.svelte';
+  import Pane from '../components/Pane.svelte';
   import { nav, go, type MorePage } from '../lib/nav.svelte';
 
   const pages: { id: Exclude<MorePage, 'menu'>; label: string; hint: string }[] = [
@@ -17,8 +18,8 @@
   ];
 </script>
 
-{#if nav.more === 'menu'}
-  <div class="stack">
+<div class="stack">
+  {#if nav.more === 'menu'}
     <h1>Ещё</h1>
     {#each pages as p (p.id)}
       <button class="card item" onclick={() => go('more', p.id)}>
@@ -26,21 +27,19 @@
         <span class="muted small">{p.hint}</span>
       </button>
     {/each}
-  </div>
-{:else}
-  <div class="stack">
+  {:else}
     <div class="row">
       <button class="icon-btn" aria-label="Назад" onclick={() => go('more')}>←</button>
       <h1>{pages.find((p) => p.id === nav.more)?.label}</h1>
     </div>
-    {#if nav.more === 'study'}<StudyScreen />
-    {:else if nav.more === 'review'}<ReviewScreen />
-    {:else if nav.more === 'habits'}<HabitsScreen />
-    {:else if nav.more === 'done'}<DoneScreen />
-    {:else if nav.more === 'data'}<DataScreen />
-    {:else}<SettingsScreen />{/if}
-  </div>
-{/if}
+  {/if}
+  <Pane active={nav.more === 'study'}><StudyScreen /></Pane>
+  <Pane active={nav.more === 'review'}><ReviewScreen /></Pane>
+  <Pane active={nav.more === 'habits'}><HabitsScreen /></Pane>
+  <Pane active={nav.more === 'done'}><DoneScreen /></Pane>
+  <Pane active={nav.more === 'data'}><DataScreen /></Pane>
+  <Pane active={nav.more === 'settings'}><SettingsScreen /></Pane>
+</div>
 
 <style>
   .item {

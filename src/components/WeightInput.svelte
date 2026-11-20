@@ -7,7 +7,7 @@
 
   let { compact = false }: { compact?: boolean } = $props();
 
-  const weights = live(() => () => listWeights(db), [] as WeightEntry[]);
+  const weights = live(() => () => listWeights(db), [] as WeightEntry[], 'weights');
   const todayEntry = $derived(weights.current.find((w) => w.day === days.today));
   const last = $derived(weights.current.at(-1));
   const trend = $derived(weeklyTrend(weights.current));

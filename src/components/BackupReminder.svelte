@@ -5,17 +5,27 @@
   import { exportAll } from '../lib/export';
 
   const REMIND_EVERY_DAYS = 7;
+  const DATA_TABLES = ['tasks', 'weights', 'habits'];
 
+  // Transaction limited to the tables actually read; first() stops at one row
+  // instead of counting every record of every table.
   const state = live(
     () => () =>
-      db.transaction('r', db.tables, async () => {
-        const last = (await db.table('meta').get('lastExportAt'))?.value as string | undefined;
-        const snooze = (await db.table('meta').get('backupSnoozeUntil'))?.value as string | undefined;
+      db.transaction('r', ['meta', ...DATA_TABLES], async () => {
+        const meta = db.table('meta');
+        const last = (await meta.get('lastExportAt'))?.value as string | undefined;
+        const snooze = (await meta.get('backupSnoozeUntil'))?.value as string | undefined;
         let hasData = false;
-        for (const t of ['tasks', 'weights', 'habits']) if ((await db.table(t).count()) > 0) hasData = true;
+        for (const t of DATA_TABLES) {
+          if ((await db.table(t).limit(1).first()) !== undefined) {
+            hasData = true;
+            break;
+          }
+        }
         return { last, snooze, hasData };
       }),
     { last: undefined, snooze: undefined, hasData: false } as { last?: string; snooze?: string; hasData: boolean },
+    'backup-reminder',
   );
 
   const daysSince = $derived(state.current.last ? diffDays(calendarDay(new Date(state.current.last)), days.today) : null);

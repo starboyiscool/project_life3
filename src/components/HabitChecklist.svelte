@@ -16,6 +16,7 @@
       };
     },
     { habits: [], done: new Map(), today: '' },
+    'today-habits',
   );
 </script>
 

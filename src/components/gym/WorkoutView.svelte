@@ -10,6 +10,7 @@
   import { useGym } from '../../lib/gym-data.svelte';
   import { startRest, stopRest, unlockSound } from '../../lib/rest.svelte';
   import { keepAwake } from '../../lib/wakelock';
+  import { nav } from '../../lib/nav.svelte';
   import { formatDayLong, relativeDayLabel } from '../../lib/logic/day';
   import {
     before,
@@ -96,8 +97,9 @@
     repsText = String(Math.max(1, (Number.isFinite(reps) ? reps : 0) + d));
   }
 
+  // Keep-alive leaves this view mounted on other tabs: hold the screen on only while it is shown.
   $effect(() => {
-    if (isActive) return keepAwake();
+    if (isActive && nav.tab === 'gym' && nav.gym === 'now') return keepAwake();
   });
 
   async function done() {

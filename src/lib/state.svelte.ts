@@ -81,19 +81,31 @@ export const days = {
   },
 };
 
+/** Last values of keyed live() queries, shared by every mount with the same key. */
+const liveCache = new Map<string, unknown>();
+
 /**
  * Live database query. `make` runs inside an effect, so reactive values read there
  * (e.g. days.today) re-create the query when they change; the returned function is the query.
+ * With `key` the last value is kept between mounts, so a re-mounted component shows it at once
+ * instead of flashing the empty `initial` state.
  */
-export function live<T>(make: () => () => Promise<T>, initial: T): { readonly current: T; readonly loaded: boolean } {
-  let value = $state.raw(initial);
-  let loaded = $state(false);
+export function live<T>(
+  make: () => () => Promise<T>,
+  initial: T,
+  key?: string,
+): { readonly current: T; readonly loaded: boolean } {
+  const hit = key !== undefined && liveCache.has(key);
+  const cached = key === undefined ? undefined : liveCache.get(key);
+  let value = $state.raw(hit ? (cached as T) : initial);
+  let loaded = $state(hit);
   $effect(() => {
     const query = make();
     const sub = liveQuery(query).subscribe({
       next: (v) => {
         value = v;
         loaded = true;
+        if (key !== undefined) liveCache.set(key, v);
       },
       error: (e) => notify(`Ошибка чтения данных: ${errorText(e)}`, 'error'),
     });

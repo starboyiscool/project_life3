@@ -29,6 +29,7 @@
       return async () => sortTasks(await tasksForDay(db, d));
     },
     [] as Task[],
+    'today-tasks',
   );
   const old = live(
     () => {
@@ -36,6 +37,7 @@
       return () => leftovers(db, d);
     },
     [] as Task[],
+    'today-leftovers',
   );
   const streak = live(
     () => {
@@ -43,6 +45,7 @@
       return async () => mitStreak(await mitStats(db, addDays(d, -365), d), d);
     },
     { current: 0, best: 0 },
+    'today-streak',
   );
 
   const mits = $derived(tasks.current.filter((t) => t.isMit));
@@ -63,21 +66,6 @@
       <button class="link small" onclick={() => go('more', 'done')}>Серия MIT: {streak.current.current} дн.</button>
     {/if}
   </header>
-
-  <StorageWarning />
-  <StudyUpcoming />
-  <BackupReminder />
-  <ReviewReminder />
-
-  {#if old.current.length}
-    <section class="card stack">
-      <div class="row spread">
-        <span>Незавершённое с прошлых дней: <b>{old.current.length}</b></span>
-        <button class="link" onclick={() => (showOld = !showOld)}>{showOld ? 'Скрыть' : 'Разобрать'}</button>
-      </div>
-      {#if showOld}<Leftovers tasks={old.current} target={days.today} targetLabel="Сегодня" />{/if}
-    </section>
-  {/if}
 
   <section class="card">
     <div class="row spread">
@@ -100,7 +88,7 @@
 
   <section class="card stack">
     <h2 class="section-title">Привычки</h2>
-    <HabitChecklist />
+    <div class="slot-habits"><HabitChecklist /></div>
   </section>
 
   <section class="card stack">
@@ -110,7 +98,7 @@
 
   <section class="card stack">
     <h2 class="section-title">Вес</h2>
-    <WeightInput compact />
+    <div class="slot-weight"><WeightInput compact /></div>
   </section>
 
   <section class="card">
@@ -118,17 +106,47 @@
     {#each others as t (t.id)}<TaskRow task={t} onedit={(x) => (editing = x)} />{/each}
     <div class="qa"><QuickAdd day={days.today} /></div>
   </section>
+
+  <!--
+    One-off blocks load their data on their own and may appear a moment later.
+    They sit below the main content, so their arrival never pushes it down.
+  -->
+  <StorageWarning />
+  <StudyUpcoming />
+  <BackupReminder />
+  <ReviewReminder />
+
+  {#if old.current.length}
+    <section class="card stack">
+      <div class="row spread">
+        <span>Незавершённое с прошлых дней: <b>{old.current.length}</b></span>
+        <button class="link" onclick={() => (showOld = !showOld)}>{showOld ? 'Скрыть' : 'Разобрать'}</button>
+      </div>
+      {#if showOld}<Leftovers tasks={old.current} target={days.today} targetLabel="Сегодня" />{/if}
+    </section>
+  {/if}
 </div>
 
 <TaskEditor task={editing} onclose={() => (editing = null)} />
 
 <style>
-  .hero { background: var(--mesh-terracotta); border: 1px solid var(--border); border-radius: 18px; padding: 18px; }
+  /* min-height = 48px tap target + 2 × 18px padding + 2px border: the streak button
+     appearing after load does not change the header height. */
+  .hero { background: var(--mesh-terracotta); border: 1px solid var(--border); border-radius: 18px; padding: 18px; min-height: 86px; }
 
   .hero .link { color: var(--text); }
 
   header h1 {
     line-height: 1.1;
+  }
+
+  /* Reserved height while habits and weight load (chip 44px, row with a 48px button). */
+  .slot-habits {
+    min-height: 44px;
+  }
+
+  .slot-weight {
+    min-height: 48px;
   }
 
   .empty {

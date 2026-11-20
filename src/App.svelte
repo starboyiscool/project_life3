@@ -6,6 +6,7 @@
   import NutritionScreen from './screens/NutritionScreen.svelte';
   import GymScreen from './screens/GymScreen.svelte';
   import MoreScreen from './screens/MoreScreen.svelte';
+  import Pane from './components/Pane.svelte';
   import { toasts, dismiss, runAction } from './lib/toast.svelte';
   import { pwa, applyUpdate } from './lib/pwa.svelte';
   import { nav, go, type Tab } from './lib/nav.svelte';
@@ -99,18 +100,13 @@
 
   <div class="brand" aria-label="Life Tracker"><svg class="brand-mark" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v18M3 12h18M5.6 5.6l12.8 12.8M18.4 5.6 5.6 18.4" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" /></svg><span>LIFE TRACKER</span><button class="theme-toggle" aria-label={isDark ? 'Текущая тема: тёмная. Включить светлую' : 'Текущая тема: светлая. Включить тёмную'} onclick={toggleTheme}>{isDark ? '☾ Тёмная' : '☀ Светлая'}</button></div>
 
+  <!-- Screens mount once on first visit and are only hidden afterwards (Pane = lazy keep-alive). -->
   <main>
-    {#if nav.tab === 'today'}
-      <TodayScreen />
-    {:else if nav.tab === 'plan'}
-      <PlanScreen />
-    {:else if nav.tab === 'food'}
-      <NutritionScreen />
-    {:else if nav.tab === 'gym'}
-      <GymScreen />
-    {:else}
-      <MoreScreen />
-    {/if}
+    <Pane active={nav.tab === 'today'}><TodayScreen /></Pane>
+    <Pane active={nav.tab === 'plan'}><PlanScreen /></Pane>
+    <Pane active={nav.tab === 'food'}><NutritionScreen /></Pane>
+    <Pane active={nav.tab === 'gym'}><GymScreen /></Pane>
+    <Pane active={nav.tab === 'more'}><MoreScreen /></Pane>
   </main>
 
   <nav>
