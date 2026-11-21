@@ -97,7 +97,8 @@
   <form class="card stack" onsubmit={add}>
     <h2 class="section-title">Новая привычка</h2>
     <input bind:value={name} placeholder="Например: вода 2 л" aria-label="Название" />
-    <div class="seg">
+    <div class="seg sliding" style:--n={2} style:--i={kind === 'daily' ? 0 : 1}>
+      <span class="plate" aria-hidden="true"></span>
       <button type="button" class:on={kind === 'daily'} onclick={() => (kind = 'daily')}>Каждый день</button>
       <button type="button" class:on={kind === 'weekly'} onclick={() => (kind = 'weekly')}>N раз в неделю</button>
     </div>

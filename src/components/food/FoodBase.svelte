@@ -2,6 +2,7 @@
   import Icon from '../Icon.svelte';
   import FoodFields, { draftOf, emptyDraft, foodOf, type FoodDraft } from './FoodFields.svelte';
   import { db } from '../../lib/app-db';
+  import Pane from '../Pane.svelte';
   import { act, live } from '../../lib/state.svelte';
   import { notify } from '../../lib/toast.svelte';
   import { dishAsFood, fmt1, parseFoodCsv, parseNum, searchByName, type Dish, type DishItem, type Food } from '../../lib/logic/nutrition';
@@ -107,7 +108,8 @@
 </script>
 
 <div class="stack">
-  <div class="seg">
+  <div class="seg sliding" style:--n={2} style:--i={tab === 'foods' ? 0 : 1}>
+    <span class="plate" aria-hidden="true"></span>
     <button class:on={tab === 'foods'} onclick={() => (tab = 'foods')}>Продукты ({foods.current.length})</button>
     <button class:on={tab === 'dishes'} onclick={() => (tab = 'dishes')}>Блюда ({dishes.current.length})</button>
   </div>
@@ -116,7 +118,7 @@
     <button class="primary" onclick={() => (tab === 'foods' ? openFood(null) : openDish(null))}>+</button>
   </div>
 
-  {#if tab === 'foods'}
+  <Pane active={tab === 'foods'}>
     <div class="card list">
       {#each shownFoods as f (f.id)}
         <div class="item">
@@ -143,7 +145,8 @@
         {#each csvErrors as e (e)}<p class="small danger">{e}</p>{/each}
       </div>
     </details>
-  {:else}
+  </Pane>
+  <Pane active={tab === 'dishes'}>
     <div class="card list">
       {#each shownDishes as d (d.id)}
         <div class="item">
@@ -160,7 +163,7 @@
       {/each}
     </div>
     <p class="muted small">Блюдо добавляется в дневник одним тапом, целиком. Граммовку потом можно поправить, значения пересчитаются.</p>
-  {/if}
+  </Pane>
 </div>
 
 <dialog class="sheet" bind:this={foodDialog}>

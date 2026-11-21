@@ -1,5 +1,6 @@
 <script lang="ts">
   import ExerciseEditor from './ExerciseEditor.svelte';
+  import Pane from '../Pane.svelte';
   import TemplateEditor from './TemplateEditor.svelte';
   import { db } from '../../lib/app-db';
   import { act } from '../../lib/state.svelte';
@@ -22,12 +23,13 @@
 </script>
 
 <div class="stack">
-  <div class="seg">
+  <div class="seg sliding" style:--n={2} style:--i={seg === 'tpl' ? 0 : 1}>
+    <span class="plate" aria-hidden="true"></span>
     <button class:on={seg === 'tpl'} onclick={() => (seg = 'tpl')}>Шаблоны</button>
     <button class:on={seg === 'ex'} onclick={() => (seg = 'ex')}>Упражнения</button>
   </div>
 
-  {#if seg === 'tpl'}
+  <Pane active={seg === 'tpl'}>
     {#each gym.data.templates as t (t.id)}
       <button class="card item" onclick={() => (editTpl = $state.snapshot(t))}>
         <span class="row"><b>{t.name}</b>{#if t.suggestion}<span class="tag">предложение</span>{/if}</span>
@@ -39,7 +41,8 @@
     {/if}
     <button onclick={() => (editTpl = newTpl())}>+ Новый шаблон</button>
     <p class="muted small">Шаблоны чередуются по порядку в списке: следующая тренировка берёт шаблон после последнего выполненного.</p>
-  {:else}
+  </Pane>
+  <Pane active={seg === 'ex'}>
     {#each groups as x (x.g)}
       <section class="card list">
         <h2 class="section-title">{groupLabel(x.g)}</h2>
@@ -63,7 +66,7 @@
         {/each}
       </details>
     {/if}
-  {/if}
+  </Pane>
 </div>
 
 <ExerciseEditor exercise={editEx} onclose={() => (editEx = null)} />
