@@ -1,4 +1,5 @@
 <script lang="ts">
+  import Icon from './Icon.svelte';
   import { CATEGORIES, type Category } from '../lib/logic/tasks';
   import { addTask } from '../lib/repo/tasks';
   import { db } from '../lib/app-db';
@@ -35,7 +36,7 @@
       class:on={isMit}
       aria-pressed={isMit}
       aria-label="Приоритетная (MIT)"
-      onclick={() => (isMit = !isMit)}>★</button
+      onclick={() => (isMit = !isMit)}><Icon name="star" size={18} filled={isMit} /></button
     >
     <input bind:this={input} bind:value={title} {placeholder} enterkeyhint="done" autocomplete="off" />
     <button type="submit" class="primary icon-btn" aria-label="Добавить" disabled={!title.trim()}>+</button>
@@ -56,7 +57,7 @@
 <style>
   .star {
     color: var(--muted);
-    font-size: 1.2rem;
+    font-size: var(--fs-lg);
   }
 
   .star.on {
@@ -65,7 +66,7 @@
   }
 
   .primary.icon-btn {
-    font-size: 1.4rem;
+    font-size: var(--fs-xl);
   }
 
   .qa {

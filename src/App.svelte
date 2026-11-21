@@ -1,6 +1,8 @@
 <script lang="ts">
-  import { flushSync } from 'svelte';
-  import { act, saveSettings, settings } from './lib/state.svelte';
+  import ThemeToggle from './components/ThemeToggle.svelte';
+  import Icon from './components/Icon.svelte';
+  import { fly } from 'svelte/transition';
+  import { useThemeSync } from './lib/theme.svelte';
   import TodayScreen from './screens/TodayScreen.svelte';
   import PlanScreen from './screens/PlanScreen.svelte';
   import NutritionScreen from './screens/NutritionScreen.svelte';
@@ -11,75 +13,10 @@
   import { pwa, applyUpdate } from './lib/pwa.svelte';
   import { nav, go, type Tab } from './lib/nav.svelte';
 
-  let isDark = $state(false);
-  $effect(() => {
-    const preference = settings.theme;
-    const media = window.matchMedia('(prefers-color-scheme: dark)');
-    const apply = () => {
-      const resolved = preference === 'system' ? (media.matches ? 'dark' : 'light') : preference;
-      isDark = resolved === 'dark';
-      document.documentElement.dataset.theme = resolved;
-    };
-    apply(); media.addEventListener('change', apply);
-    return () => media.removeEventListener('change', apply);
-  });
+  // <html data-theme> follows the saved preference and the OS; switching goes through setTheme().
+  useThemeSync();
 
-  // A broad, irregular front travels from the button side across the screen.
-  function waveFrames(x: number, y: number, width: number, height: number): Keyframe[] {
-    const cornerX = x < width / 2 ? width : 0, cornerY = y < height / 2 ? height : 0;
-    const distance = Math.hypot(cornerX - x, cornerY - y) || 1;
-    const dx = (cornerX - x) / distance, dy = (cornerY - y) / distance;
-    const nx = -dy, ny = dx;
-    const corners = [[0, 0], [width, 0], [0, height], [width, height]];
-    const projected = corners.map(([cx, cy]) => (cx - x) * dx + (cy - y) * dy);
-    const perpendicular = corners.map(([cx, cy]) => (cx - x) * nx + (cy - y) * ny);
-    const margin = Math.max(width, height) * 0.13 + 80;
-    const lo = Math.min(...perpendicular) - margin, hi = Math.max(...perpendicular) + margin;
-    const from = Math.min(...projected) - margin, to = Math.max(...projected) + margin;
-    const point = (s: number, n: number) => `${(x + dx * s + nx * n).toFixed(1)}px ${(y + dy * s + ny * n).toFixed(1)}px`;
-    return Array.from({ length: 61 }, (_, frame) => {
-      const t = frame / 60;
-      const baseline = from + (to - from) * t;
-      const amplitude = Math.min(width, height) * .11 * Math.sin(Math.PI * t);
-      const front = Array.from({ length: 33 }, (_, i) => {
-        const n = lo + (hi - lo) * i / 32;
-        const wave = Math.sin(i / 32 * Math.PI * 3 + t * 2.5) * .68 + Math.sin(i / 32 * Math.PI * 6 - t * 2) * .32;
-        return point(baseline + amplitude * wave, n);
-      });
-      return { offset: t, clipPath: `polygon(${[point(from - margin, lo), ...front, point(from - margin, hi)].join(', ')})` };
-    });
-  }
-
-  let transitioning = false;
-  async function toggleTheme(event: MouseEvent) {
-    if (transitioning) return;
-    const next = isDark ? 'light' : 'dark';
-    const target = event.currentTarget as HTMLElement;
-    const box = target.getBoundingClientRect();
-    const x = box.left + box.width / 2, y = box.top + box.height / 2;
-    const update = () => { flushSync(() => { settings.theme = next; }); };
-    const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    if (reduced || typeof document.startViewTransition !== 'function') {
-      update();
-      await act(() => saveSettings({ theme: next }));
-      return;
-    }
-    transitioning = true;
-    try {
-      const transition = document.startViewTransition(update);
-      await transition.ready;
-      document.documentElement.animate(
-        waveFrames(x, y, innerWidth, innerHeight),
-        { duration: 5000, easing: 'linear', pseudoElement: '::view-transition-new(root)' },
-      );
-      await act(() => saveSettings({ theme: next }));
-      await transition.finished;
-    } catch (err) {
-      // A failed/skipped transition must not prevent the theme or preference being saved.
-      if (settings.theme !== next) update();
-      await act(() => saveSettings({ theme: next }));
-    } finally { transitioning = false; }
-  }
+  const motion = (ms: number) => (matchMedia('(prefers-reduced-motion: reduce)').matches ? 0 : ms);
 
   const tabs: { id: Tab; label: string; icon: string }[] = [
     { id: 'today', label: 'Сегодня', icon: 'M3 10.5 12 3l9 7.5V20H4v-9.5 M9 20v-6h6v6' },
@@ -98,7 +35,7 @@
     </div>
   {/if}
 
-  <div class="brand" aria-label="Life Tracker"><svg class="brand-mark" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v18M3 12h18M5.6 5.6l12.8 12.8M18.4 5.6 5.6 18.4" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" /></svg><span>LIFE TRACKER</span><button class="theme-toggle" aria-label={isDark ? 'Текущая тема: тёмная. Включить светлую' : 'Текущая тема: светлая. Включить тёмную'} onclick={toggleTheme}>{isDark ? '☾ Тёмная' : '☀ Светлая'}</button></div>
+  <div class="brand" aria-label="Life Tracker"><svg class="brand-mark" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v18M3 12h18M5.6 5.6l12.8 12.8M18.4 5.6 5.6 18.4" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" /></svg><span>LIFE TRACKER</span><ThemeToggle /></div>
 
   <!-- Screens mount once on first visit and are only hidden afterwards (Pane = lazy keep-alive). -->
   <main>
@@ -110,19 +47,22 @@
   </main>
 
   <nav>
+    <div class="tabs" style:--i={tabs.findIndex((t) => t.id === nav.tab)}>
+    <span class="plate" aria-hidden="true"></span>
     {#each tabs as t (t.id)}
       <button class:active={nav.tab === t.id} onclick={() => go(t.id)} aria-current={nav.tab === t.id}>
         <svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d={t.icon} /></svg>
         <span>{t.label}</span>
       </button>
     {/each}
+    </div>
   </nav>
 
   <div class="toasts" aria-live="polite">
     {#each toasts as t (t.id)}
-      <div class="toast {t.kind}">
+      <div class="toast {t.kind}" in:fly={{ y: 12, duration: motion(200) }} out:fly={{ y: 12, duration: motion(200) }}>
         <span>{t.text}</span>
-        {#if t.action}<button class="link" onclick={() => runAction(t.id)}>{t.actionLabel}</button>{:else}<button class="link" aria-label="Закрыть уведомление" onclick={() => dismiss(t.id)}>✕</button>{/if}
+        {#if t.action}<button class="link" onclick={() => runAction(t.id)}>{t.actionLabel}</button>{:else}<button class="link" aria-label="Закрыть уведомление" onclick={() => dismiss(t.id)}><Icon name="close" size={18} /></button>{/if}
       </div>
     {/each}
   </div>
@@ -149,13 +89,12 @@
     gap: 9px;
     padding: 24px 20px 16px;
     color: var(--muted);
-    font-size: 0.7rem;
+    font-size: var(--fs-xs);
     font-weight: 700;
     letter-spacing: 0.1em;
   }
 
   .brand-mark { color: var(--accent); width: 19px; height: 19px; flex: none; }
-  .theme-toggle { margin-left: auto; min-height: 44px; padding: 0 10px; font-size: .8rem; font-weight: 600; letter-spacing: normal; white-space: nowrap; color: var(--text); }
 
   nav {
     position: fixed;
@@ -165,16 +104,37 @@
     display: flex;
     gap: 2px;
     padding: 8px 8px calc(8px + env(safe-area-inset-bottom));
-    background: var(--surface);
+    background: color-mix(in srgb, var(--surface) 84%, transparent);
+    backdrop-filter: blur(14px);
     border-top: 1px solid var(--border);
     justify-content: center;
     z-index: 10;
   }
 
+  .tabs {
+    position: relative;
+    display: grid;
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    gap: 2px;
+    width: min(100%, 568px);
+  }
+
+  /* Sliding plate under the active tab: transform only. */
+  .plate {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    width: calc((100% - 8px) / 5);
+    border-radius: var(--radius);
+    background: var(--surface-2);
+    transform: translateX(calc(var(--i) * (100% + 2px)));
+    transition: transform var(--dur-3) var(--ease-out);
+  }
+
   nav button {
-    flex: 1;
+    position: relative;
     min-width: 0;
-    max-width: 112px;
     min-height: 58px;
     padding: 5px 1px;
     display: flex;
@@ -182,7 +142,7 @@
     align-items: center;
     justify-content: center;
     gap: 3px;
-    font-size: 0.8rem;
+    font-size: var(--fs-sm);
     font-weight: 500;
     background: transparent;
     border-color: transparent;
@@ -193,13 +153,12 @@
 
   nav button.active {
     color: var(--accent);
-    background: var(--surface-2);
     font-weight: 700;
   }
 
   @media (max-width: 360px) {
     main { padding-left: 16px; padding-right: 16px; }
-    nav button { font-size: 0.72rem; }
+    nav button { font-size: var(--fs-xs); }
   }
 
   .banner {
@@ -238,7 +197,7 @@
     gap: 12px;
     border: 1px solid var(--border);
     border-radius: var(--radius);
-    box-shadow: 0 4px 12px rgb(0 0 0 / 0.08);
+    box-shadow: var(--shadow-2);
     background: var(--surface);
   }
 

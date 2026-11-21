@@ -12,7 +12,7 @@
         <button class="chip" onclick={stopRest}>Хватит</button>
       </span>
     </div>
-    <div class="bar"><i style="width: {rest.total ? (100 * rest.left) / rest.total : 0}%"></i></div>
+    <div class="bar"><i style:--p={(rest.total ? (100 * rest.left) / rest.total : 0) / 100}></i></div>
   </div>
 {/if}
 
@@ -29,7 +29,7 @@
   }
 
   .t {
-    font-size: 1.3rem;
+    font-size: var(--fs-xl);
     margin-left: 4px;
   }
 </style>

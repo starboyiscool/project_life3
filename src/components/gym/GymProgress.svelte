@@ -108,7 +108,7 @@
   }
 
   .stats b {
-    font-size: 1.4rem;
+    font-size: var(--fs-xl);
   }
 
   .pr {
@@ -118,7 +118,7 @@
   table {
     width: 100%;
     border-collapse: collapse;
-    font-size: 0.92rem;
+    font-size: var(--fs-sm);
   }
 
   th,

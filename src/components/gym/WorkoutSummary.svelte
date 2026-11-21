@@ -1,4 +1,5 @@
 <script lang="ts">
+  import Icon from '../Icon.svelte';
   import type { useGym } from '../../lib/gym-data.svelte';
   import { before, markRecords, setText, type Workout } from '../../lib/logic/gym';
 
@@ -13,7 +14,7 @@
 
 <div class="stack sum">
   <span class="muted small">
-    {tpl?.name ?? 'Без шаблона'}{#if minutes && minutes < 600}&nbsp;· {minutes} мин{/if}{#if marks.size}&nbsp;· <span class="pr">★ рекордов: {marks.size}</span>{/if}
+    {tpl?.name ?? 'Без шаблона'}{#if minutes && minutes < 600}&nbsp;· {minutes} мин{/if}{#if marks.size}&nbsp;· <span class="pr"><Icon name="star" size={13} filled /> рекордов: {marks.size}</span>{/if}
   </span>
   {#each workout.items as it, i (i)}
     {@const load = gym.exMap.get(it.exerciseId)?.load ?? 'barbell'}

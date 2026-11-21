@@ -1,4 +1,5 @@
 <script lang="ts">
+  import Icon from '../Icon.svelte';
   import ExercisePicker from './ExercisePicker.svelte';
   import { db } from '../../lib/app-db';
   import { act } from '../../lib/state.svelte';
@@ -60,7 +61,7 @@
             <span class="grow nm">{name(it.exerciseId)}</span>
             <button type="button" class="icon-btn sm" disabled={i === 0} onclick={() => move(i, -1)} aria-label="Выше">↑</button>
             <button type="button" class="icon-btn sm" disabled={i === t.items.length - 1} onclick={() => move(i, 1)} aria-label="Ниже">↓</button>
-            <button type="button" class="icon-btn sm" onclick={() => t!.items.splice(i, 1)} aria-label="Убрать">✕</button>
+            <button type="button" class="icon-btn sm" onclick={() => t!.items.splice(i, 1)} aria-label="Убрать"><Icon name="close" size={18} /></button>
           </div>
           <div class="row nums">
             <input value={it.sets} inputmode="numeric" aria-label="Подходы" onchange={(e) => (it.sets = int(e.currentTarget.value, it.sets))} />

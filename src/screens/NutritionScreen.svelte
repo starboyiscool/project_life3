@@ -16,7 +16,8 @@
 
 <div class="stack">
   <h1>Питание</h1>
-  <div class="seg">
+  <div class="seg sliding" style:--n={pages.length} style:--i={pages.findIndex((p) => p.id === nav.food)}>
+    <span class="plate" aria-hidden="true"></span>
     {#each pages as p (p.id)}
       <button class:on={nav.food === p.id} onclick={() => go('food', p.id)}>{p.label}</button>
     {/each}

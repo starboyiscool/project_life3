@@ -11,6 +11,7 @@
   import NutritionSummary from '../components/food/NutritionSummary.svelte';
   import GymToday from '../components/gym/GymToday.svelte';
   import ReviewReminder from '../components/ReviewReminder.svelte';
+  import Icon from '../components/Icon.svelte';
   import { db } from '../lib/app-db';
   import { days, live } from '../lib/state.svelte';
   import { ensureRecurring, leftovers, mitStats, tasksForDay } from '../lib/repo/tasks';
@@ -57,24 +58,25 @@
 </script>
 
 <div class="stack">
-  <header class="row spread hero">
-    <div>
-      <h1>Сегодня</h1>
-      <p class="muted small">{formatDayLong(days.today)}</p>
-    </div>
-    {#if streak.current.current > 0}
-      <button class="link small" onclick={() => go('more', 'done')}>Серия MIT: {streak.current.current} дн.</button>
-    {/if}
+  <!-- Hierarchy: title, then date, then streak. The streak line is always reserved, so its arrival never moves anything. -->
+  <header class="hero">
+    <h1>Сегодня</h1>
+    <p class="date">{formatDayLong(days.today)}</p>
+    <p class="streak">
+      {#if streak.current.current > 0}
+        <button class="link small" onclick={() => go('more', 'done')}>Серия MIT: <span class="num">{streak.current.current}</span> дн.</button>
+      {/if}
+    </p>
   </header>
 
   <section class="card">
     <div class="row spread">
       <h2 class="section-title">Главное</h2>
-      {#if mits.length}<span class="muted small">{mitDone} из {mits.length}</span>{/if}
+      {#if mits.length}<span class="muted small num">{mitDone} из {mits.length}</span>{/if}
     </div>
     {#if tasks.loaded && mits.length === 0}
       <p class="muted small empty">
-        Нет приоритетных задач. Отметьте ★ до трёх главных дел{#if others.length}&nbsp;или
+        Нет приоритетных задач. Отметьте <Icon name="star" size={14} filled label="звёздочкой" /> до трёх главных дел{#if others.length}&nbsp;или
           <button class="link small inline" onclick={() => go('plan')}>спланируйте</button>{/if}.
       </p>
     {/if}
@@ -119,10 +121,12 @@
   {#if old.current.length}
     <section class="card stack">
       <div class="row spread">
-        <span>Незавершённое с прошлых дней: <b>{old.current.length}</b></span>
-        <button class="link" onclick={() => (showOld = !showOld)}>{showOld ? 'Скрыть' : 'Разобрать'}</button>
+        <span>Незавершённое с прошлых дней: <b class="num">{old.current.length}</b></span>
+        <button class="link" aria-expanded={showOld} onclick={() => (showOld = !showOld)}>{showOld ? 'Скрыть' : 'Разобрать'}</button>
       </div>
-      {#if showOld}<Leftovers tasks={old.current} target={days.today} targetLabel="Сегодня" />{/if}
+      <div class="reveal" class:open={showOld}>
+        <div inert={!showOld}><Leftovers tasks={old.current} target={days.today} targetLabel="Сегодня" /></div>
+      </div>
     </section>
   {/if}
 </div>
@@ -130,14 +134,33 @@
 <TaskEditor task={editing} onclose={() => (editing = null)} />
 
 <style>
-  /* min-height = 48px tap target + 2 × 18px padding + 2px border: the streak button
-     appearing after load does not change the header height. */
-  .hero { background: var(--mesh-terracotta); border: 1px solid var(--border); border-radius: 18px; padding: 18px; min-height: 86px; }
-
-  .hero .link { color: var(--text); }
+  .hero {
+    display: grid;
+    gap: 2px;
+    background: var(--mesh-terracotta);
+    border: 1px solid var(--border);
+    border-radius: 18px;
+    padding: 20px 18px 14px;
+  }
 
   header h1 {
     line-height: 1.1;
+  }
+
+  .date {
+    color: var(--muted);
+    font-size: var(--fs-sm);
+  }
+
+  .streak {
+    min-height: 32px;
+    margin-top: 6px;
+  }
+
+  .streak .link {
+    min-height: 32px;
+    padding: 0;
+    font-weight: 600;
   }
 
   /* Reserved height while habits and weight load (chip 44px, row with a 48px button). */

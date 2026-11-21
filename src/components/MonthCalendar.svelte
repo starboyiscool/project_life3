@@ -63,11 +63,11 @@
   {/if}
 </section>
 <style>
- .calendar { display: grid; gap: 8px; } .cal-head {display:grid; grid-template-columns:48px minmax(0,1fr) 48px; align-items:center; text-align:center;} .cal-head h2 { text-transform: capitalize; } .cal-head button { font-size: 1.4rem; line-height: 1; display:grid; place-items:center; }
+ .calendar { display: grid; gap: 8px; } .cal-head {display:grid; grid-template-columns:48px minmax(0,1fr) 48px; align-items:center; text-align:center;} .cal-head h2 { text-transform: capitalize; } .cal-head button { font-size: var(--fs-xl); line-height: 1; display:grid; place-items:center; }
  .grid { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 3px; text-align: center; }
- .weekdays { color: var(--muted); font-size: .8rem; }
+ .weekdays { color: var(--muted); font-size: var(--fs-sm); }
  .date { padding: 2px; min-width: 0; min-height: 46px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 0; border-color: transparent; background: transparent; line-height: 1.1; }
  .date.outside { color: var(--muted); } .date.today { border-color: var(--accent); } .date.selected { background: var(--surface-2); border-color: var(--accent); font-weight: 700; }
- .count { color: var(--muted); font-size: .72rem; }
- .week-list {display:flex; flex-wrap:wrap; gap: 6px 12px; font-size:.85rem;} .week-list span {display:inline-block;} .control {color:var(--accent); font-weight:700;}
+ .count { color: var(--muted); font-size: var(--fs-xs); }
+ .week-list {display:flex; flex-wrap:wrap; gap: 6px 12px; font-size: var(--fs-sm);} .week-list span {display:inline-block;} .control {color:var(--accent); font-weight:700;}
 </style>

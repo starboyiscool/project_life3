@@ -177,7 +177,7 @@
   }
 
   .stats b {
-    font-size: 1.4rem;
+    font-size: var(--fs-xl);
   }
 
   .ok {

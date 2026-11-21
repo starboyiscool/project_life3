@@ -87,7 +87,7 @@
         <span class="muted">Серия: <b class="val">{s.streak.current}</b> {s.unit} · лучшая {s.streak.best}</span>
         <span class="muted">неделя {s.wp.done}/{s.wp.target}</span>
       </div>
-      <div class="bar"><i style="width: {Math.round(s.wp.ratio * 100)}%"></i></div>
+      <div class="bar"><i style:--p={(Math.round(s.wp.ratio * 100)) / 100}></i></div>
       <div class="row">
         <button class="link small" onclick={() => archive(h, true)}>В архив</button>
       </div>
@@ -124,7 +124,7 @@
   .title {
     padding: 0;
     color: var(--text);
-    font-size: 1.05rem;
+    font-size: var(--fs-md);
     font-weight: 600;
     text-align: left;
   }
@@ -138,7 +138,7 @@
   .day {
     padding: 0;
     min-height: 44px;
-    font-size: 0.8rem;
+    font-size: var(--fs-sm);
     color: var(--muted);
     background: transparent;
   }

@@ -1,4 +1,5 @@
 <script lang="ts">
+  import Icon from '../Icon.svelte';
   import FoodFields, { draftOf, emptyDraft, foodOf, type FoodDraft } from './FoodFields.svelte';
   import { db } from '../../lib/app-db';
   import { act, live } from '../../lib/state.svelte';
@@ -119,7 +120,7 @@
     <div class="card list">
       {#each shownFoods as f (f.id)}
         <div class="item">
-          <button class="star" aria-label="Избранное" onclick={() => toggleFav(f)}>{f.favorite ? '★' : '☆'}</button>
+          <button class="star" aria-label="Избранное" onclick={() => toggleFav(f)}><Icon name="star" size={20} filled={f.favorite} /></button>
           <button class="body" onclick={() => openFood(f)}>
             <span class="grow name">{f.name}</span>
             <span class="muted small num">{Math.round(f.per100.kcal)} · {fmt1(f.per100.p)}/{fmt1(f.per100.f)}/{fmt1(f.per100.c)}</span>
@@ -129,7 +130,7 @@
         <p class="muted small pad">{query ? 'Не найдено.' : 'Пусто. Продукты добавляются здесь или прямо при записи еды.'}</p>
       {/each}
     </div>
-    <p class="muted small">Ккал · Б/Ж/У на 100 г. ★ — избранное, показывается первым при добавлении еды.</p>
+    <p class="muted small">Ккал · Б/Ж/У на 100 г. <Icon name="star" size={13} filled /> — избранное, показывается первым при добавлении еды.</p>
 
     <details class="card">
       <summary>Импорт из CSV</summary>
@@ -146,7 +147,7 @@
     <div class="card list">
       {#each shownDishes as d (d.id)}
         <div class="item">
-          <button class="star" aria-label="Избранное" onclick={() => toggleDishFav(d)}>{d.favorite ? '★' : '☆'}</button>
+          <button class="star" aria-label="Избранное" onclick={() => toggleDishFav(d)}><Icon name="star" size={20} filled={d.favorite} /></button>
           <button class="body" onclick={() => openDish(d)}>
             <span class="grow name">{d.name}</span>
             <span class="muted small num">{dishAsFood(d.items).total.kcal} ккал · {d.items.length} прод.</span>
@@ -184,7 +185,7 @@
       <div class="row">
         <span class="grow name">{it.name}</span>
         <input class="g" bind:value={it.gramsText} inputmode="decimal" aria-label="Граммы {it.name}" /><span class="muted small">г</span>
-        <button type="button" class="icon-btn" aria-label="Убрать" onclick={() => (items = items.filter((_, j) => j !== i))}>✕</button>
+        <button type="button" class="icon-btn" aria-label="Убрать" onclick={() => (items = items.filter((_, j) => j !== i))}><Icon name="close" size={18} /></button>
       </div>
     {/each}
     <input bind:value={itemQuery} placeholder="+ продукт из базы" aria-label="Добавить продукт" autocomplete="off" />
@@ -222,7 +223,7 @@
     border: none;
     padding: 0 10px;
     color: var(--accent);
-    font-size: 1.15rem;
+    font-size: var(--fs-lg);
   }
 
   .body {

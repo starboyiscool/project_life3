@@ -133,8 +133,8 @@
 </dialog>
 <style>
   .work { border-top: 1px solid var(--border); padding-top: 12px; }
-  .badge { font-size: .75rem; border-radius: 999px; background: var(--surface-2); padding: 2px 7px; }
-  dialog::backdrop { background: rgb(0 0 0 / .45); }
+  .badge { font-size: var(--fs-xs); border-radius: 999px; background: var(--surface-2); padding: 2px 7px; }
+  dialog::backdrop { background: var(--backdrop); }
   .form { width: min(560px, 100%); max-height: calc(100dvh - 24px); overflow-y: auto; }
   .check { width: 20px; height: 20px; flex: none; }
   textarea { padding: 10px 12px; min-height: 80px; }

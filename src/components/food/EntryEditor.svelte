@@ -85,7 +85,7 @@
 <style>
   .grams {
     width: 110px;
-    font-size: 1.2rem;
+    font-size: var(--fs-lg);
   }
 
   .right {

@@ -1,4 +1,5 @@
 <script lang="ts">
+  import Icon from '../components/Icon.svelte';
   import StudyDayEvents from '../components/StudyDayEvents.svelte';
   import { matchesFilter, type CalendarFilter } from '../lib/logic/calendar';
   import type { Workout } from '../lib/logic/gym';
@@ -100,7 +101,7 @@
       </div>
 
       <div class="row spread summary">
-        <span class="muted small">За день: ★ {mitCount} из {MAX_MIT}</span>
+        <span class="muted small">За день: <Icon name="star" size={13} filled /> {mitCount} из {MAX_MIT}</span>
         {#if totalMin > 0}<span class="muted small">≈ {formatEstimate(totalMin)}</span>{/if}
       </div>
 
@@ -165,7 +166,7 @@
 
   .daynav .icon-btn {
     flex: none;
-    font-size: 1.4rem;
+    font-size: var(--fs-xl);
     line-height: 1;
     display: grid; place-items: center;
   }

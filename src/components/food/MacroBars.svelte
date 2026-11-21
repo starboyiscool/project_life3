@@ -20,7 +20,7 @@
           <span>{r.label} <b class="num">{Math.round(total[r.key])}</b><span class="muted">&nbsp;/ {goal[r.key]}</span></span>
           <span class="muted">{pr.label}</span>
         </div>
-        <div class="bar"><i style:width="{pr.share * 100}%"></i></div>
+        <div class="bar"><i style:--p={(pr.share * 100) / 100}></i></div>
       </div>
     {/each}
   </div>

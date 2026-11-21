@@ -11,6 +11,7 @@
   import { startRest, stopRest, unlockSound } from '../../lib/rest.svelte';
   import { keepAwake } from '../../lib/wakelock';
   import { nav } from '../../lib/nav.svelte';
+  import Icon from '../Icon.svelte';
   import { formatDayLong, relativeDayLabel } from '../../lib/logic/day';
   import {
     before,
@@ -242,10 +243,10 @@
           </span>
         </div>
         <details class="menu">
-          <summary aria-label="Действия с упражнением">⋯</summary>
+          <summary aria-label="Действия с упражнением"><Icon name="more" size={22} /></summary>
           <div class="menu-body">
-            <button disabled={idx === 0} onclick={() => move(-1)}>↑ Выше</button>
-            <button disabled={idx === workout.items.length - 1} onclick={() => move(1)}>↓ Ниже</button>
+            <button disabled={idx === 0} onclick={() => move(-1)}><Icon name="up" size={16} /> Выше</button>
+            <button disabled={idx === workout.items.length - 1} onclick={() => move(1)}><Icon name="down" size={16} /> Ниже</button>
             <button class="danger" onclick={removeCurrent}>Убрать из тренировки</button>
           </div>
         </details>
@@ -276,7 +277,7 @@
                 <span class="grow num" class:warm={s.kind === 'warmup'}>
                   {setText(s, ex.load)}{#if s.kind === 'warmup'}&nbsp;<span class="tag">разминка</span>{/if}{#if s.failure}&nbsp;<span class="tag">отказ</span>{/if}{#if s.rpe}&nbsp;<span class="tag">RPE {String(s.rpe).replace('.', ',')}</span>{/if}
                 </span>
-                {#if r}<span class="pr" title={r.map((k) => RECORD_LABELS[k]).join(', ')}>★ рекорд</span>{/if}
+                {#if r}<span class="pr" title={r.map((k) => RECORD_LABELS[k]).join(', ')}><Icon name="star" size={13} filled /> рекорд</span>{/if}
               </button>
               {#if s.note}<span class="muted small note">{s.note}</span>{/if}
             </li>
@@ -288,17 +289,17 @@
         {#if ex.load !== 'bodyweight'}
           <div class="stepper">
             <span class="muted small lab">{ex.load === 'bodyweight_plus' ? 'Доп. вес, кг' : 'Вес, кг'}</span>
-            <button class="icon-btn" onclick={() => bumpKg(-step)} aria-label="Минус {fmtKg(step)} кг">−</button>
+            <button class="icon-btn" onclick={() => bumpKg(-step)} aria-label="Минус {fmtKg(step)} кг"><Icon name="minus" /></button>
             <input class="big num" bind:value={kgText} inputmode="decimal" aria-label="Вес, кг" placeholder="0" />
-            <button class="icon-btn" onclick={() => bumpKg(step)} aria-label="Плюс {fmtKg(step)} кг">+</button>
+            <button class="icon-btn" onclick={() => bumpKg(step)} aria-label="Плюс {fmtKg(step)} кг"><Icon name="plus" /></button>
           </div>
         {/if}
         {#if ex.load === 'barbell'}<PlateCalculator target={kgText.trim() ? kg : null} />{/if}
         <div class="stepper">
           <span class="muted small lab">Повторы</span>
-          <button class="icon-btn" onclick={() => bumpReps(-1)} aria-label="Минус повтор">−</button>
+          <button class="icon-btn" onclick={() => bumpReps(-1)} aria-label="Минус повтор"><Icon name="minus" /></button>
           <input class="big num" bind:value={repsText} inputmode="numeric" aria-label="Повторы" />
-          <button class="icon-btn" onclick={() => bumpReps(1)} aria-label="Плюс повтор">+</button>
+          <button class="icon-btn" onclick={() => bumpReps(1)} aria-label="Плюс повтор"><Icon name="plus" /></button>
         </div>
         <div class="chips">
           <button class="chip" class:on={kind === 'work'} onclick={() => (kind = 'work')}>Рабочий</button>
@@ -371,7 +372,7 @@
 
   .cnt {
     margin-left: 6px;
-    font-size: 0.8rem;
+    font-size: var(--fs-sm);
     color: var(--muted);
   }
 
@@ -418,7 +419,7 @@
   }
 
   .tag {
-    font-size: 0.75rem;
+    font-size: var(--fs-xs);
     color: var(--muted);
     border: 1px solid var(--border);
     border-radius: 6px;
@@ -427,7 +428,7 @@
 
   .pr {
     color: var(--ok);
-    font-size: 0.85rem;
+    font-size: var(--fs-sm);
     white-space: nowrap;
   }
 
@@ -439,18 +440,18 @@
   }
 
   .stepper .icon-btn {
-    font-size: 1.3rem;
+    font-size: var(--fs-xl);
   }
 
   .big {
     text-align: center;
-    font-size: 1.3rem;
+    font-size: var(--fs-xl);
     padding: 0 4px;
   }
 
   .go {
     min-height: 56px;
-    font-size: 1.05rem;
+    font-size: var(--fs-md);
   }
 
   .more {
@@ -472,7 +473,7 @@
     min-height: var(--tap);
     display: grid;
     place-items: center;
-    font-size: 1.3rem;
+    font-size: var(--fs-xl);
     color: var(--muted);
   }
 

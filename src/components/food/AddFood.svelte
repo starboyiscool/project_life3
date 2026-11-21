@@ -1,4 +1,5 @@
 <script lang="ts">
+  import Icon from '../Icon.svelte';
   import FoodFields, { emptyDraft, foodOf, type FoodDraft } from './FoodFields.svelte';
   import { db } from '../../lib/app-db';
   import { act, live } from '../../lib/state.svelte';
@@ -177,12 +178,12 @@
           {#each list as it (it.kind + (it.kind === 'food' ? it.food.id : it.dish.id))}
             {#if it.kind === 'food'}
               <button class="item" onclick={() => pickFood(it.food)}>
-                <span class="grow name">{it.favorite ? '★ ' : ''}{it.name}</span>
+                <span class="grow name">{#if it.favorite}<Icon name="star" size={14} filled label="избранное" /> {/if}{it.name}</span>
                 <span class="muted small num">{Math.round(it.food.per100.kcal)} ккал/100 г</span>
               </button>
             {:else}
               <button class="item" onclick={() => addDish(it.dish)}>
-                <span class="grow name">{it.favorite ? '★ ' : ''}{it.name} <span class="tag">блюдо</span></span>
+                <span class="grow name">{#if it.favorite}<Icon name="star" size={14} filled label="избранное" /> {/if}{it.name} <span class="tag">блюдо</span></span>
                 <span class="muted small num">+ {dishAsFood(it.dish.items).total.kcal} ккал</span>
               </button>
             {/if}
@@ -211,7 +212,7 @@
         <form class="stack" onsubmit={addPicked}>
           <div class="row spread">
             <b>{picked.name}</b>
-            <button type="button" class="link" onclick={() => toggleFav(picked!)} aria-label="Избранное">{picked.favorite ? '★' : '☆'}</button>
+            <button type="button" class="link" onclick={() => toggleFav(picked!)} aria-label="Избранное"><Icon name="star" size={20} filled={picked.favorite} /></button>
           </div>
           <span class="muted small num">
             На 100 г: {Math.round(picked.per100.kcal)} ккал · Б {fmt1(picked.per100.p)} · Ж {fmt1(picked.per100.f)} · У {fmt1(picked.per100.c)}
@@ -232,7 +233,7 @@
           </div>
           {#if preview}<span class="muted small num">Б {fmt1(preview.p)} · Ж {fmt1(preview.f)} · У {fmt1(preview.c)}</span>{/if}
           <div class="row spread">
-            <button type="button" onclick={back}>← Назад</button>
+            <button type="button" onclick={back}><Icon name="back" size={18} /> Назад</button>
             <button type="submit" class="primary" disabled={!grams}>Добавить</button>
           </div>
         </form>
@@ -241,7 +242,7 @@
           <FoodFields bind:draft />
           <p class="muted small">Значения с упаковки, на 100 г. Белки, жиры и углеводы можно не заполнять.</p>
           <div class="row spread">
-            <button type="button" onclick={back}>← Назад</button>
+            <button type="button" onclick={back}><Icon name="back" size={18} /> Назад</button>
             <button type="submit" class="primary" disabled={!foodOf(draft)}>Сохранить в базу</button>
           </div>
         </form>
@@ -255,7 +256,7 @@
             <label class="lbl"><span class="muted small">Углев.</span><input bind:value={manual.c} inputmode="decimal" /></label>
           </div>
           <div class="row spread">
-            <button type="button" onclick={back}>← Назад</button>
+            <button type="button" onclick={back}><Icon name="back" size={18} /> Назад</button>
             <button type="submit" class="primary" disabled={parseNum(manual.kcal) == null}>Добавить</button>
           </div>
         </form>
@@ -298,7 +299,7 @@
   }
 
   .tag {
-    font-size: 0.75rem;
+    font-size: var(--fs-xs);
     color: var(--muted);
     border: 1px solid var(--border);
     border-radius: 6px;
@@ -311,7 +312,7 @@
 
   .grams {
     width: 110px;
-    font-size: 1.2rem;
+    font-size: var(--fs-lg);
   }
 
   .right {

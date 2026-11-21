@@ -1,0 +1,596 @@
+[1mdiff --git a/src/App.svelte b/src/App.svelte[m
+[1mindex c683b61..52c1fb6 100644[m
+[1m--- a/src/App.svelte[m
+[1m+++ b/src/App.svelte[m
+[36m@@ -149,13 +149,13 @@[m
+     gap: 9px;[m
+     padding: 24px 20px 16px;[m
+     color: var(--muted);[m
+[31m-    font-size: 0.7rem;[m
+[32m+[m[32m    font-size: var(--fs-xs);[m
+     font-weight: 700;[m
+     letter-spacing: 0.1em;[m
+   }[m
+ [m
+   .brand-mark { color: var(--accent); width: 19px; height: 19px; flex: none; }[m
+[31m-  .theme-toggle { margin-left: auto; min-height: 44px; padding: 0 10px; font-size: .8rem; font-weight: 600; letter-spacing: normal; white-space: nowrap; color: var(--text); }[m
+[32m+[m[32m  .theme-toggle { margin-left: auto; min-height: 44px; padding: 0 10px; font-size: var(--fs-sm); font-weight: 600; letter-spacing: normal; white-space: nowrap; color: var(--text); }[m
+ [m
+   nav {[m
+     position: fixed;[m
+[36m@@ -182,7 +182,7 @@[m
+     align-items: center;[m
+     justify-content: center;[m
+     gap: 3px;[m
+[31m-    font-size: 0.8rem;[m
+[32m+[m[32m    font-size: var(--fs-sm);[m
+     font-weight: 500;[m
+     background: transparent;[m
+     border-color: transparent;[m
+[36m@@ -199,7 +199,7 @@[m
+ [m
+   @media (max-width: 360px) {[m
+     main { padding-left: 16px; padding-right: 16px; }[m
+[31m-    nav button { font-size: 0.72rem; }[m
+[32m+[m[32m    nav button { font-size: var(--fs-xs); }[m
+   }[m
+ [m
+   .banner {[m
+[36m@@ -238,7 +238,7 @@[m
+     gap: 12px;[m
+     border: 1px solid var(--border);[m
+     border-radius: var(--radius);[m
+[31m-    box-shadow: 0 4px 12px rgb(0 0 0 / 0.08);[m
+[32m+[m[32m    box-shadow: var(--shadow-2);[m
+     background: var(--surface);[m
+   }[m
+ [m
+[1mdiff --git a/src/app.css b/src/app.css[m
+[1mindex 232e341..bbb2882 100644[m
+[1m--- a/src/app.css[m
+[1m+++ b/src/app.css[m
+[36m@@ -1,10 +1,6 @@[m
+ :root {[m
+   --mesh-cream: radial-gradient(at 12% 18%, #F6DCCB 0px, transparent 50%), radial-gradient(at 88% 8%, #EFE5D3 0px, transparent 50%), radial-gradient(at 75% 88%, #EBD6C8 0px, transparent 55%), radial-gradient(at 8% 92%, #E6EADC 0px, transparent 55%), #FAF9F5;[m
+   --mesh-terracotta: radial-gradient(at 20% 15%, #F0B79C 0px, transparent 60%), radial-gradient(at 85% 25%, #F7D5C2 0px, transparent 60%), radial-gradient(at 60% 90%, #E4A98F 0px, transparent 60%), radial-gradient(at 5% 80%, #F3E2D3 0px, transparent 60%), #F5E6DA;[m
+[31m-  --mesh-sand: radial-gradient(at 18% 22%, #EFE2CC 0px, transparent 50%), radial-gradient(at 82% 12%, #F6EEE0 0px, transparent 50%), radial-gradient(at 70% 85%, #E7D6BC 0px, transparent 55%), radial-gradient(at 10% 88%, #F2E9DA 0px, transparent 50%), #F7F1E6;[m
+[31m-  --mesh-sage: radial-gradient(at 15% 20%, #D5DEC9 0px, transparent 50%), radial-gradient(at 85% 15%, #EAEFDF 0px, transparent 50%), radial-gradient(at 65% 88%, #C8D4BA 0px, transparent 55%), radial-gradient(at 8% 85%, #F1EFE2 0px, transparent 50%), #EEF1E6;[m
+[31m-  --mesh-mist: radial-gradient(at 18% 18%, #D3DDE6 0px, transparent 50%), radial-gradient(at 85% 10%, #E8EEF2 0px, transparent 50%), radial-gradient(at 72% 88%, #CAD6E0 0px, transparent 55%), radial-gradient(at 8% 90%, #F0EDE6 0px, transparent 50%), #EDF1F4;[m
+[31m-  --mesh-lilac: radial-gradient(at 15% 22%, #DDD5E8 0px, transparent 50%), radial-gradient(at 88% 12%, #F0EAF3 0px, transparent 50%), radial-gradient(at 70% 88%, #E8D2D8 0px, transparent 55%), radial-gradient(at 8% 88%, #F3E8E0 0px, transparent 50%), #F2EEF5;[m
+ [m
+   /* Warm, paper-like surfaces with a restrained terracotta accent. */[m
+   --bg: #f6f4ef;[m
+[36m@@ -19,6 +15,27 @@[m
+   --ok: #366b50;[m
+   --tap: 48px;[m
+   --radius: 16px;[m
+[32m+[m[32m  --border-strong: #c9bdb0;[m
+[32m+[m[32m  --accent-hover: color-mix(in srgb, var(--accent) 85%, black);[m
+[32m+[m[32m  --shadow-1: 0 1px 2px rgb(55 45 30 / 0.025);[m
+[32m+[m[32m  --shadow-2: 0 4px 12px rgb(0 0 0 / 0.08);[m
+[32m+[m[32m  --backdrop: rgb(45 38 31 / 0.42);[m
+[32m+[m
+[32m+[m[32m  /* Type scale: five steps only. */[m
+[32m+[m[32m  --fs-xs: 0.75rem;[m
+[32m+[m[32m  --fs-sm: 0.875rem;[m
+[32m+[m[32m  --fs-md: 1rem;[m
+[32m+[m[32m  --fs-lg: 1.15rem;[m
+[32m+[m[32m  --fs-xl: 1.5rem;[m
+[32m+[m
+[32m+[m[32m  /* Motion: durations and easings used across the interface. */[m
+[32m+[m[32m  --dur-1: 90ms;[m
+[32m+[m[32m  --dur-2: 200ms;[m
+[32m+[m[32m  --dur-3: 320ms;[m
+[32m+[m[32m  --dur-4: 400ms;[m
+[32m+[m[32m  --dur-theme: 1100ms;[m
+[32m+[m[32m  --ease-out: cubic-bezier(0.2, 0.8, 0.2, 1);[m
+[32m+[m[32m  --ease-theme: cubic-bezier(0.65, 0.05, 0.2, 1);[m
+   color-scheme: light;[m
+   font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;[m
+   font-size: 16px;[m
+[36m@@ -80,7 +97,7 @@[m [mbutton {[m
+   border: 1px solid var(--border);[m
+   background: var(--surface);[m
+   cursor: pointer;[m
+[31m-  transition: background-color 150ms ease, border-color 150ms ease;[m
+[32m+[m[32m  transition: background-color var(--dur-2) var(--ease-out), border-color var(--dur-2) var(--ease-out);[m
+   touch-action: manipulation;[m
+ }[m
+ [m
+[36m@@ -92,13 +109,13 @@[m [mbutton.primary {[m
+ }[m
+ [m
+ button:not(:disabled):hover {[m
+[31m-  border-color: #c9bdb0;[m
+[32m+[m[32m  border-color: var(--border-strong);[m
+   background-color: var(--surface-2);[m
+ }[m
+ [m
+ button.primary:not(:disabled):hover {[m
+[31m-  background-color: #893e2b;[m
+[31m-  border-color: #893e2b;[m
+[32m+[m[32m  background-color: var(--accent-hover);[m
+[32m+[m[32m  border-color: var(--accent-hover);[m
+ }[m
+ [m
+ button:disabled {[m
+[36m@@ -121,19 +138,23 @@[m [mh3 {[m
+ [m
+ h1 {[m
+   font-family: Georgia, 'Times New Roman', serif;[m
+[31m-  font-size: 2rem;[m
+[32m+[m[32m  font-size: var(--fs-xl);[m
+   font-weight: 400;[m
+   letter-spacing: -0.035em;[m
+[32m+[m[32m  text-wrap: balance;[m
+ }[m
+ [m
+[31m-h2 { font-size: 1.2rem; }[m
+[32m+[m[32mh2 {[m
+[32m+[m[32m  font-size: var(--fs-lg);[m
+[32m+[m[32m  text-wrap: balance;[m
+[32m+[m[32m}[m
+ [m
+ .card {[m
+   background: var(--surface);[m
+   border: 1px solid var(--border);[m
+   border-radius: var(--radius);[m
+   padding: 18px;[m
+[31m-  box-shadow: 0 1px 2px rgb(55 45 30 / 0.025);[m
+[32m+[m[32m  box-shadow: var(--shadow-1);[m
+ }[m
+ [m
+ .muted {[m
+[36m@@ -141,7 +162,7 @@[m [mh2 { font-size: 1.2rem; }[m
+ }[m
+ [m
+ .small {[m
+[31m-  font-size: 0.85rem;[m
+[32m+[m[32m  font-size: var(--fs-sm);[m
+ }[m
+ [m
+ input[type='text'],[m
+[36m@@ -199,7 +220,7 @@[m [mselect:focus {[m
+   min-height: 40px;[m
+   padding: 0 14px;[m
+   border-radius: 999px;[m
+[31m-  font-size: 0.9rem;[m
+[32m+[m[32m  font-size: var(--fs-sm);[m
+   background: transparent;[m
+   color: var(--muted);[m
+ }[m
+[36m@@ -234,7 +255,7 @@[m [mselect:focus {[m
+ }[m
+ [m
+ .section-title {[m
+[31m-  font-size: 0.75rem;[m
+[32m+[m[32m  font-size: var(--fs-xs);[m
+   font-weight: 700;[m
+   text-transform: uppercase;[m
+   letter-spacing: 0.09em;[m
+[36m@@ -276,13 +297,13 @@[m [mdialog.sheet {[m
+   max-height: calc(100dvh - 24px);[m
+   padding: 16px;[m
+   border: 1px solid var(--border);[m
+[31m-  border-radius: 16px;[m
+[32m+[m[32m  border-radius: var(--radius);[m
+   background: var(--surface);[m
+   color: var(--text);[m
+ }[m
+ [m
+ dialog.sheet::backdrop {[m
+[31m-  background: rgb(45 38 31 / 0.42);[m
+[32m+[m[32m  background: var(--backdrop);[m
+ }[m
+ [m
+ .lbl {[m
+[36m@@ -299,14 +320,6 @@[m [mdialog.sheet::backdrop {[m
+   font-variant-numeric: tabular-nums;[m
+ }[m
+ [m
+[31m-h1 {[m
+[31m-  font-size: 1.5rem;[m
+[31m-}[m
+[31m-[m
+[31m-h2 {[m
+[31m-  font-size: 1.15rem;[m
+[31m-}[m
+[31m-[m
+ /* Keep motion optional and keyboard focus visible across the interface. */[m
+ @media (prefers-reduced-motion: reduce) {[m
+   *, *::before, *::after { transition-duration: 0.01ms !important; scroll-behavior: auto !important; }[m
+[36m@@ -318,12 +331,10 @@[m [mh2 {[m
+   --text: #f5eee6; --muted: #d1c5b9; --accent: #e7ae93; --accent-text: #25201d; --danger: #ffb5aa; --ok: #aed3b4;[m
+   --mesh-cream: radial-gradient(at 12% 18%, #3A2E28 0px, transparent 50%), radial-gradient(at 88% 8%, #2F2B27 0px, transparent 50%), radial-gradient(at 75% 88%, #3B2D26 0px, transparent 55%), radial-gradient(at 8% 92%, #2A2E29 0px, transparent 55%), #262624;[m
+   --mesh-terracotta: radial-gradient(at 20% 15%, #5a3c32 0px, transparent 60%), radial-gradient(at 85% 25%, #44352f 0px, transparent 60%), radial-gradient(at 60% 90%, #51362d 0px, transparent 60%), #302c29;[m
+[31m-  --mesh-sand: radial-gradient(at 18% 22%, #453e33, transparent 60%), #302e29;[m
+[31m-  --mesh-sage: radial-gradient(at 15% 20%, #394236, transparent 60%), #2c302b;[m
+[31m-  --mesh-mist: radial-gradient(at 18% 18%, #35414a, transparent 60%), #292e32;[m
+[31m-  --mesh-lilac: radial-gradient(at 15% 22%, #453b4a, transparent 60%), #302c32;[m
+ }[m
+[31m-[data-theme="dark"] button.primary:not(:disabled):hover { background: #f1bca5; border-color: #f1bca5; }[m
+[32m+[m[32m[data-theme="dark"] {[m
+[32m+[m[32m  --accent-hover: color-mix(in srgb, var(--accent) 80%, white);[m
+[32m+[m[32m}[m
+ [m
+ /* The reveal is animated explicitly; disable the browser's default crossfade. */[m
+ ::view-transition-old(root), ::view-transition-new(root) { animation: none; mix-blend-mode: normal; }[m
+[1mdiff --git a/src/components/MonthCalendar.svelte b/src/components/MonthCalendar.svelte[m
+[1mindex bc94f93..7dbee6b 100644[m
+[1m--- a/src/components/MonthCalendar.svelte[m
+[1m+++ b/src/components/MonthCalendar.svelte[m
+[36m@@ -63,11 +63,11 @@[m
+   {/if}[m
+ </section>[m
+ <style>[m
+[31m- .calendar { display: grid; gap: 8px; } .cal-head {display:grid; grid-template-columns:48px minmax(0,1fr) 48px; align-items:center; text-align:center;} .cal-head h2 { text-transform: capitalize; } .cal-head button { font-size: 1.4rem; line-height: 1; display:grid; place-items:center; }[m
+[32m+[m[32m .calendar { display: grid; gap: 8px; } .cal-head {display:grid; grid-template-columns:48px minmax(0,1fr) 48px; align-items:center; text-align:center;} .cal-head h2 { text-transform: capitalize; } .cal-head button { font-size: var(--fs-xl); line-height: 1; display:grid; place-items:center; }[m
+  .grid { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 3px; text-align: center; }[m
+[31m- .weekdays { color: var(--muted); font-size: .8rem; }[m
+[32m+[m[32m .weekdays { color: var(--muted); font-size: var(--fs-sm); }[m
+  .date { padding: 2px; min-width: 0; min-height: 46px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 0; border-color: transparent; background: transparent; line-height: 1.1; }[m
+  .date.outside { color: var(--muted); } .date.today { border-color: var(--accent); } .date.selected { background: var(--surface-2); border-color: var(--accent); font-weight: 700; }[m
+[31m- .count { color: var(--muted); font-size: .72rem; }[m
+[31m- .week-list {display:flex; flex-wrap:wrap; gap: 6px 12px; font-size:.85rem;} .week-list span {display:inline-block;} .control {color:var(--accent); font-weight:700;}[m
+[32m+[m[32m .count { color: var(--muted); font-size: var(--fs-xs); }[m
+[32m+[m[32m .week-list {display:flex; flex-wrap:wrap; gap: 6px 12px; font-size: var(--fs-sm);} .week-list span {display:inline-block;} .control {color:var(--accent); font-weight:700;}[m
+ </style>[m
+[1mdiff --git a/src/components/QuickAdd.svelte b/src/components/QuickAdd.svelte[m
+[1mindex 8e45dc0..a908150 100644[m
+[1m--- a/src/components/QuickAdd.svelte[m
+[1m+++ b/src/components/QuickAdd.svelte[m
+[36m@@ -56,7 +56,7 @@[m
+ <style>[m
+   .star {[m
+     color: var(--muted);[m
+[31m-    font-size: 1.2rem;[m
+[32m+[m[32m    font-size: var(--fs-lg);[m
+   }[m
+ [m
+   .star.on {[m
+[36m@@ -65,7 +65,7 @@[m
+   }[m
+ [m
+   .primary.icon-btn {[m
+[31m-    font-size: 1.4rem;[m
+[32m+[m[32m    font-size: var(--fs-xl);[m
+   }[m
+ [m
+   .qa {[m
+[1mdiff --git a/src/components/RecurringList.svelte b/src/components/RecurringList.svelte[m
+[1mindex 60eba48..3c62684 100644[m
+[1m--- a/src/components/RecurringList.svelte[m
+[1m+++ b/src/components/RecurringList.svelte[m
+[36m@@ -114,6 +114,6 @@[m
+   }[m
+ [m
+   .seg button {[m
+[31m-    font-size: 0.85rem;[m
+[32m+[m[32m    font-size: var(--fs-sm);[m
+   }[m
+ </style>[m
+[1mdiff --git a/src/components/TaskEditor.svelte b/src/components/TaskEditor.svelte[m
+[1mindex 66f5ca3..ee169f8 100644[m
+[1m--- a/src/components/TaskEditor.svelte[m
+[1m+++ b/src/components/TaskEditor.svelte[m
+[36m@@ -128,7 +128,7 @@[m
+   }[m
+ [m
+   dialog::backdrop {[m
+[31m-    background: rgb(45 38 31 / 0.42);[m
+[32m+[m[32m    background: var(--backdrop);[m
+   }[m
+ [m
+   .lbl {[m
+[1mdiff --git a/src/components/TaskRow.svelte b/src/components/TaskRow.svelte[m
+[1mindex 5b659af..4b28252 100644[m
+[1m--- a/src/components/TaskRow.svelte[m
+[1m+++ b/src/components/TaskRow.svelte[m
+[36m@@ -111,7 +111,7 @@[m
+   }[m
+ [m
+   .meta {[m
+[31m-    font-size: 0.8rem;[m
+[32m+[m[32m    font-size: var(--fs-sm);[m
+     color: var(--muted);[m
+   }[m
+ [m
+[1mdiff --git a/src/components/WeightInput.svelte b/src/components/WeightInput.svelte[m
+[1mindex d9e85ec..1e81e02 100644[m
+[1m--- a/src/components/WeightInput.svelte[m
+[1m+++ b/src/components/WeightInput.svelte[m
+[36m@@ -76,7 +76,7 @@[m
+ [m
+ <style>[m
+   .big {[m
+[31m-    font-size: 1.4rem;[m
+[32m+[m[32m    font-size: var(--fs-xl);[m
+     font-weight: 600;[m
+   }[m
+ [m
+[1mdiff --git a/src/components/food/AddFood.svelte b/src/components/food/AddFood.svelte[m
+[1mindex ea647a3..ad2cc44 100644[m
+[1m--- a/src/components/food/AddFood.svelte[m
+[1m+++ b/src/components/food/AddFood.svelte[m
+[36m@@ -298,7 +298,7 @@[m
+   }[m
+ [m
+   .tag {[m
+[31m-    font-size: 0.75rem;[m
+[32m+[m[32m    font-size: var(--fs-xs);[m
+     color: var(--muted);[m
+     border: 1px solid var(--border);[m
+     border-radius: 6px;[m
+[36m@@ -311,7 +311,7 @@[m
+ [m
+   .grams {[m
+     width: 110px;[m
+[31m-    font-size: 1.2rem;[m
+[32m+[m[32m    font-size: var(--fs-lg);[m
+   }[m
+ [m
+   .right {[m
+[1mdiff --git a/src/components/food/EntryEditor.svelte b/src/components/food/EntryEditor.svelte[m
+[1mindex cfc7dbf..712bf94 100644[m
+[1m--- a/src/components/food/EntryEditor.svelte[m
+[1m+++ b/src/components/food/EntryEditor.svelte[m
+[36m@@ -85,7 +85,7 @@[m
+ <style>[m
+   .grams {[m
+     width: 110px;[m
+[31m-    font-size: 1.2rem;[m
+[32m+[m[32m    font-size: var(--fs-lg);[m
+   }[m
+ [m
+   .right {[m
+[1mdiff --git a/src/components/food/FoodBase.svelte b/src/components/food/FoodBase.svelte[m
+[1mindex 797600d..f68b3c3 100644[m
+[1m--- a/src/components/food/FoodBase.svelte[m
+[1m+++ b/src/components/food/FoodBase.svelte[m
+[36m@@ -222,7 +222,7 @@[m
+     border: none;[m
+     padding: 0 10px;[m
+     color: var(--accent);[m
+[31m-    font-size: 1.15rem;[m
+[32m+[m[32m    font-size: var(--fs-lg);[m
+   }[m
+ [m
+   .body {[m
+[1mdiff --git a/src/components/food/FoodDay.svelte b/src/components/food/FoodDay.svelte[m
+[1mindex c1dab50..b69d7fe 100644[m
+[1m--- a/src/components/food/FoodDay.svelte[m
+[1m+++ b/src/components/food/FoodDay.svelte[m
+[36m@@ -155,7 +155,7 @@[m
+   }[m
+ [m
+   .add {[m
+[31m-    font-size: 1.4rem;[m
+[32m+[m[32m    font-size: var(--fs-xl);[m
+     min-height: 44px;[m
+   }[m
+ [m
+[1mdiff --git a/src/components/food/FoodWeek.svelte b/src/components/food/FoodWeek.svelte[m
+[1mindex 9db0991..c273e31 100644[m
+[1m--- a/src/components/food/FoodWeek.svelte[m
+[1m+++ b/src/components/food/FoodWeek.svelte[m
+[36m@@ -94,7 +94,7 @@[m
+   table {[m
+     width: 100%;[m
+     border-collapse: collapse;[m
+[31m-    font-size: 0.92rem;[m
+[32m+[m[32m    font-size: var(--fs-sm);[m
+   }[m
+ [m
+   th,[m
+[1mdiff --git a/src/components/gym/GymLibrary.svelte b/src/components/gym/GymLibrary.svelte[m
+[1mindex 0fae88f..04c1d1b 100644[m
+[1m--- a/src/components/gym/GymLibrary.svelte[m
+[1m+++ b/src/components/gym/GymLibrary.svelte[m
+[36m@@ -81,7 +81,7 @@[m
+   }[m
+ [m
+   .tag {[m
+[31m-    font-size: 0.75rem;[m
+[32m+[m[32m    font-size: var(--fs-xs);[m
+     color: var(--muted);[m
+     border: 1px solid var(--border);[m
+     border-radius: 6px;[m
+[1mdiff --git a/src/components/gym/GymNow.svelte b/src/components/gym/GymNow.svelte[m
+[1mindex 3f873b0..fb78f73 100644[m
+[1m--- a/src/components/gym/GymNow.svelte[m
+[1m+++ b/src/components/gym/GymNow.svelte[m
+[36m@@ -105,7 +105,7 @@[m
+   }[m
+ [m
+   .tag {[m
+[31m-    font-size: 0.75rem;[m
+[32m+[m[32m    font-size: var(--fs-xs);[m
+     color: var(--muted);[m
+     border: 1px solid var(--border);[m
+     border-radius: 6px;[m
+[1mdiff --git a/src/components/gym/GymProgress.svelte b/src/components/gym/GymProgress.svelte[m
+[1mindex 391007d..7d4b852 100644[m
+[1m--- a/src/components/gym/GymProgress.svelte[m
+[1m+++ b/src/components/gym/GymProgress.svelte[m
+[36m@@ -108,7 +108,7 @@[m
+   }[m
+ [m
+   .stats b {[m
+[31m-    font-size: 1.4rem;[m
+[32m+[m[32m    font-size: var(--fs-xl);[m
+   }[m
+ [m
+   .pr {[m
+[36m@@ -118,7 +118,7 @@[m
+   table {[m
+     width: 100%;[m
+     border-collapse: collapse;[m
+[31m-    font-size: 0.92rem;[m
+[32m+[m[32m    font-size: var(--fs-sm);[m
+   }[m
+ [m
+   th,[m
+[1mdiff --git a/src/components/gym/RestBar.svelte b/src/components/gym/RestBar.svelte[m
+[1mindex a78e78b..bd0a378 100644[m
+[1m--- a/src/components/gym/RestBar.svelte[m
+[1m+++ b/src/components/gym/RestBar.svelte[m
+[36m@@ -29,7 +29,7 @@[m
+   }[m
+ [m
+   .t {[m
+[31m-    font-size: 1.3rem;[m
+[32m+[m[32m    font-size: var(--fs-xl);[m
+     margin-left: 4px;[m
+   }[m
+ </style>[m
+[1mdiff --git a/src/components/gym/WorkoutView.svelte b/src/components/gym/WorkoutView.svelte[m
+[1mindex 60b8b41..c5d793f 100644[m
+[1m--- a/src/components/gym/WorkoutView.svelte[m
+[1m+++ b/src/components/gym/WorkoutView.svelte[m
+[36m@@ -371,7 +371,7 @@[m
+ [m
+   .cnt {[m
+     margin-left: 6px;[m
+[31m-    font-size: 0.8rem;[m
+[32m+[m[32m    font-size: var(--fs-sm);[m
+     color: var(--muted);[m
+   }[m
+ [m
+[36m@@ -418,7 +418,7 @@[m
+   }[m
+ [m
+   .tag {[m
+[31m-    font-size: 0.75rem;[m
+[32m+[m[32m    font-size: var(--fs-xs);[m
+     color: var(--muted);[m
+     border: 1px solid var(--border);[m
+     border-radius: 6px;[m
+[36m@@ -427,7 +427,7 @@[m
+ [m
+   .pr {[m
+     color: var(--ok);[m
+[31m-    font-size: 0.85rem;[m
+[32m+[m[32m    font-size: var(--fs-sm);[m
+     white-space: nowrap;[m
+   }[m
+ [m
+[36m@@ -439,18 +439,18 @@[m
+   }[m
+ [m
+   .stepper .icon-btn {[m
+[31m-    font-size: 1.3rem;[m
+[32m+[m[32m    font-size: var(--fs-xl);[m
+   }[m
+ [m
+   .big {[m
+     text-align: center;[m
+[31m-    font-size: 1.3rem;[m
+[32m+[m[32m    font-size: var(--fs-xl);[m
+     padding: 0 4px;[m
+   }[m
+ [m
+   .go {[m
+     min-height: 56px;[m
+[31m-    font-size: 1.05rem;[m
+[32m+[m[32m    font-size: var(--fs-md);[m
+   }[m
+ [m
+   .more {[m
+[36m@@ -472,7 +472,7 @@[m
+     min-height: var(--tap);[m
+     display: grid;[m
+     place-items: center;[m
+[31m-    font-size: 1.3rem;[m
+[32m+[m[32m    font-size: var(--fs-xl);[m
+     color: var(--muted);[m
+   }[m
+ [m
+[1mdiff --git a/src/screens/DoneScreen.svelte b/src/screens/DoneScreen.svelte[m
+[1mindex ca04d87..965ff21 100644[m
+[1m--- a/src/screens/DoneScreen.svelte[m
+[1m+++ b/src/screens/DoneScreen.svelte[m
+[36m@@ -104,7 +104,7 @@[m
+   }[m
+ [m
+   .stats b {[m
+[31m-    font-size: 1.5rem;[m
+[32m+[m[32m    font-size: var(--fs-xl);[m
+   }[m
+ [m
+   ul {[m
+[1mdiff --git a/src/screens/HabitsScreen.svelte b/src/screens/HabitsScreen.svelte[m
+[1mindex c0d0e85..dc298ed 100644[m
+[1m--- a/src/screens/HabitsScreen.svelte[m
+[1m+++ b/src/screens/HabitsScreen.svelte[m
+[36m@@ -124,7 +124,7 @@[m
+   .title {[m
+     padding: 0;[m
+     color: var(--text);[m
+[31m-    font-size: 1.05rem;[m
+[32m+[m[32m    font-size: var(--fs-md);[m
+     font-weight: 600;[m
+     text-align: left;[m
+   }[m
+[36m@@ -138,7 +138,7 @@[m
+   .day {[m
+     padding: 0;[m
+     min-height: 44px;[m
+[31m-    font-size: 0.8rem;[m
+[32m+[m[32m    font-size: var(--fs-sm);[m
+     color: var(--muted);[m
+     background: transparent;[m
+   }[m
+[1mdiff --git a/src/screens/PlanScreen.svelte b/src/screens/PlanScreen.svelte[m
+[1mindex deb8186..90efdd3 100644[m
+[1m--- a/src/screens/PlanScreen.svelte[m
+[1m+++ b/src/screens/PlanScreen.svelte[m
+[36m@@ -165,7 +165,7 @@[m
+ [m
+   .daynav .icon-btn {[m
+     flex: none;[m
+[31m-    font-size: 1.4rem;[m
+[32m+[m[32m    font-size: var(--fs-xl);[m
+     line-height: 1;[m
+     display: grid; place-items: center;[m
+   }[m
+[1mdiff --git a/src/screens/ReviewScreen.svelte b/src/screens/ReviewScreen.svelte[m
+[1mindex 95aa470..ac40495 100644[m
+[1m--- a/src/screens/ReviewScreen.svelte[m
+[1m+++ b/src/screens/ReviewScreen.svelte[m
+[36m@@ -177,7 +177,7 @@[m
+   }[m
+ [m
+   .stats b {[m
+[31m-    font-size: 1.4rem;[m
+[32m+[m[32m    font-size: var(--fs-xl);[m
+   }[m
+ [m
+   .ok {[m
+[1mdiff --git a/src/screens/StudyScreen.svelte b/src/screens/StudyScreen.svelte[m
+[1mindex 4160d7a..082136c 100644[m
+[1m--- a/src/screens/StudyScreen.svelte[m
+[1m+++ b/src/screens/StudyScreen.svelte[m
+[36m@@ -133,8 +133,8 @@[m
+ </dialog>[m
+ <style>[m
+   .work { border-top: 1px solid var(--border); padding-top: 12px; }[m
+[31m-  .badge { font-size: .75rem; border-radius: 999px; background: var(--surface-2); padding: 2px 7px; }[m
+[31m-  dialog::backdrop { background: rgb(0 0 0 / .45); }[m
+[32m+[m[32m  .badge { font-size: var(--fs-xs); border-radius: 999px; background: var(--surface-2); padding: 2px 7px; }[m
+[32m+[m[32m  dialog::backdrop { background: var(--backdrop); }[m
+   .form { width: min(560px, 100%); max-height: calc(100dvh - 24px); overflow-y: auto; }[m
+   .check { width: 20px; height: 20px; flex: none; }[m
+   textarea { padding: 10px 12px; min-height: 80px; }[m
+[1mdiff --git a/src/screens/WeightScreen.svelte b/src/screens/WeightScreen.svelte[m
+[1mindex 9826e1a..5374c1e 100644[m
+[1m--- a/src/screens/WeightScreen.svelte[m
+[1m+++ b/src/screens/WeightScreen.svelte[m
+[36m@@ -99,7 +99,7 @@[m
+   }[m
+ [m
+   .stats b {[m
+[31m-    font-size: 1.5rem;[m
+[32m+[m[32m    font-size: var(--fs-xl);[m
+   }[m
+ [m
+   summary {[m

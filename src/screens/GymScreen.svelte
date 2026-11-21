@@ -5,6 +5,7 @@
   import GymLibrary from '../components/gym/GymLibrary.svelte';
   import WeightScreen from './WeightScreen.svelte';
   import Pane from '../components/Pane.svelte';
+  import Icon from '../components/Icon.svelte';
   import { nav, go, type GymPage } from '../lib/nav.svelte';
 
   const pages: { id: GymPage; label: string }[] = [
@@ -18,12 +19,13 @@
 <div class="stack">
   {#if nav.gym === 'library'}
     <div class="row">
-      <button class="icon-btn" aria-label="Назад" onclick={() => go('gym', 'now')}>←</button>
+      <button class="icon-btn" aria-label="Назад" onclick={() => go('gym', 'now')}><Icon name="back" /></button>
       <h1>Упражнения и шаблоны</h1>
     </div>
   {:else}
     <h1>Зал</h1>
-    <div class="seg">
+    <div class="seg sliding" style:--n={pages.length} style:--i={pages.findIndex((p) => p.id === nav.gym)}>
+      <span class="plate" aria-hidden="true"></span>
       {#each pages as p (p.id)}
         <button class:on={nav.gym === p.id} onclick={() => go('gym', p.id)}>{p.label}</button>
       {/each}

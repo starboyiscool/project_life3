@@ -4,6 +4,7 @@
   import { setDone } from '../lib/repo/tasks';
   import { db } from '../lib/app-db';
   import { act } from '../lib/state.svelte';
+  import Icon from './Icon.svelte';
 
   let {
     task,
@@ -34,11 +35,11 @@
       aria-pressed={done}
       onclick={() => act(() => setDone(db, task.id!, !done))}
     >
-      <span class="box">{#if done}✓{/if}</span>
+      <span class="box">{#if done}<svg class="tick" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5" pathLength="1" /></svg>{/if}</span>
     </button>
   {/if}
   <button class="body" onclick={() => onedit?.(task)} disabled={!onedit}>
-    <span class="title">{#if task.isMit}<span class="star" aria-label="приоритет">★</span>{/if}{task.title}</span>
+    <span class="title">{#if task.isMit}<span class="star"><Icon name="star" size={14} filled label="приоритет" /></span>{/if}{task.title}</span>
     <span class="meta">{meta}</span>
   </button>
   {#if actions}<div class="actions">{@render actions()}</div>{/if}
@@ -73,6 +74,7 @@
     font-size: 16px;
     font-weight: 700;
     color: var(--accent-text);
+    transition: background-color 220ms var(--ease-out), border-color 220ms var(--ease-out);
   }
 
   .done .box {
@@ -98,10 +100,11 @@
 
   .title {
     overflow-wrap: anywhere;
+    transition: opacity 220ms var(--ease-out);
   }
 
   .done .title {
-    color: var(--muted);
+    opacity: 0.6;
     text-decoration: line-through;
   }
 
@@ -111,7 +114,7 @@
   }
 
   .meta {
-    font-size: 0.8rem;
+    font-size: var(--fs-sm);
     color: var(--muted);
   }
 

@@ -1,4 +1,5 @@
 <script lang="ts">
+  import Icon from '../components/Icon.svelte';
   import { db } from '../lib/app-db';
   import { days, live } from '../lib/state.svelte';
   import { doneBetween, mitStats } from '../lib/repo/tasks';
@@ -83,7 +84,7 @@
       <ul>
         {#each g.tasks as t (t.id)}
           <li>
-            {#if t.isMit}<span class="star">★</span>{/if}{t.title}
+            {#if t.isMit}<span class="star"><Icon name="star" size={14} filled label="приоритет" /></span>{/if}{t.title}
             <span class="muted small">· {categoryLabel(t.category)}</span>
           </li>
         {/each}
@@ -104,7 +105,7 @@
   }
 
   .stats b {
-    font-size: 1.5rem;
+    font-size: var(--fs-xl);
   }
 
   ul {

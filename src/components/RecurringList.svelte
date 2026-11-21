@@ -1,4 +1,5 @@
 <script lang="ts">
+  import Icon from './Icon.svelte';
   import { db } from '../lib/app-db';
   import { act, live } from '../lib/state.svelte';
   import { ensureRecurring, listRecurring, saveRecurring } from '../lib/repo/tasks';
@@ -57,7 +58,7 @@
   {#each rules.current as r (r.id)}
     <div class="row spread item" class:off={!r.active}>
       <div class="grow">
-        <div>{#if r.isMit}<span class="star">★</span>{/if}{r.title}</div>
+        <div>{#if r.isMit}<span class="star"><Icon name="star" size={14} filled label="приоритет" /></span>{/if}{r.title}</div>
         <div class="muted small">{describeRule(r.rule)} · {categoryLabel(r.category)}</div>
       </div>
       <button class="small" onclick={() => toggleActive(r)}>{r.active ? 'Выключить' : 'Включить'}</button>
@@ -69,7 +70,7 @@
   <h2 class="section-title">Новый повтор</h2>
   <input bind:value={title} placeholder="Название" aria-label="Название" />
   <div class="chips">
-    <button type="button" class="chip" class:on={isMit} onclick={() => (isMit = !isMit)}>★ MIT</button>
+    <button type="button" class="chip" class:on={isMit} onclick={() => (isMit = !isMit)}><Icon name="star" size={13} filled /> MIT</button>
     {#each CATEGORIES as c (c.id)}
       <button type="button" class="chip" class:on={category === c.id} onclick={() => (category = c.id)}>{c.label}</button>
     {/each}
@@ -114,6 +115,6 @@
   }
 
   .seg button {
-    font-size: 0.85rem;
+    font-size: var(--fs-sm);
   }
 </style>

@@ -1,10 +1,6 @@
 :root {
   --mesh-cream: radial-gradient(at 12% 18%, #F6DCCB 0px, transparent 50%), radial-gradient(at 88% 8%, #EFE5D3 0px, transparent 50%), radial-gradient(at 75% 88%, #EBD6C8 0px, transparent 55%), radial-gradient(at 8% 92%, #E6EADC 0px, transparent 55%), #FAF9F5;
   --mesh-terracotta: radial-gradient(at 20% 15%, #F0B79C 0px, transparent 60%), radial-gradient(at 85% 25%, #F7D5C2 0px, transparent 60%), radial-gradient(at 60% 90%, #E4A98F 0px, transparent 60%), radial-gradient(at 5% 80%, #F3E2D3 0px, transparent 60%), #F5E6DA;
-  --mesh-sand: radial-gradient(at 18% 22%, #EFE2CC 0px, transparent 50%), radial-gradient(at 82% 12%, #F6EEE0 0px, transparent 50%), radial-gradient(at 70% 85%, #E7D6BC 0px, transparent 55%), radial-gradient(at 10% 88%, #F2E9DA 0px, transparent 50%), #F7F1E6;
-  --mesh-sage: radial-gradient(at 15% 20%, #D5DEC9 0px, transparent 50%), radial-gradient(at 85% 15%, #EAEFDF 0px, transparent 50%), radial-gradient(at 65% 88%, #C8D4BA 0px, transparent 55%), radial-gradient(at 8% 85%, #F1EFE2 0px, transparent 50%), #EEF1E6;
-  --mesh-mist: radial-gradient(at 18% 18%, #D3DDE6 0px, transparent 50%), radial-gradient(at 85% 10%, #E8EEF2 0px, transparent 50%), radial-gradient(at 72% 88%, #CAD6E0 0px, transparent 55%), radial-gradient(at 8% 90%, #F0EDE6 0px, transparent 50%), #EDF1F4;
-  --mesh-lilac: radial-gradient(at 15% 22%, #DDD5E8 0px, transparent 50%), radial-gradient(at 88% 12%, #F0EAF3 0px, transparent 50%), radial-gradient(at 70% 88%, #E8D2D8 0px, transparent 55%), radial-gradient(at 8% 88%, #F3E8E0 0px, transparent 50%), #F2EEF5;
 
   /* Warm, paper-like surfaces with a restrained terracotta accent. */
   --bg: #f6f4ef;
@@ -19,6 +15,27 @@
   --ok: #366b50;
   --tap: 48px;
   --radius: 16px;
+  --border-strong: #c9bdb0;
+  --accent-hover: color-mix(in srgb, var(--accent) 85%, black);
+  --shadow-1: 0 1px 2px rgb(55 45 30 / 0.04), 0 6px 16px -8px rgb(55 45 30 / 0.12);
+  --shadow-2: 0 4px 12px rgb(0 0 0 / 0.08);
+  --backdrop: rgb(45 38 31 / 0.42);
+
+  /* Type scale: five steps only. */
+  --fs-xs: 0.75rem;
+  --fs-sm: 0.875rem;
+  --fs-md: 1rem;
+  --fs-lg: 1.15rem;
+  --fs-xl: 1.5rem;
+
+  /* Motion: durations and easings used across the interface. */
+  --dur-1: 90ms;
+  --dur-2: 200ms;
+  --dur-3: 320ms;
+  --dur-4: 400ms;
+  --dur-theme: 1100ms;
+  --ease-out: cubic-bezier(0.2, 0.8, 0.2, 1);
+  --ease-theme: cubic-bezier(0.65, 0.05, 0.2, 1);
   color-scheme: light;
   font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
   font-size: 16px;
@@ -80,7 +97,7 @@ button {
   border: 1px solid var(--border);
   background: var(--surface);
   cursor: pointer;
-  transition: background-color 150ms ease, border-color 150ms ease;
+  transition: background-color var(--dur-2) var(--ease-out), border-color var(--dur-2) var(--ease-out), transform var(--dur-1) var(--ease-out);
   touch-action: manipulation;
 }
 
@@ -92,13 +109,17 @@ button.primary {
 }
 
 button:not(:disabled):hover {
-  border-color: #c9bdb0;
+  border-color: var(--border-strong);
   background-color: var(--surface-2);
 }
 
 button.primary:not(:disabled):hover {
-  background-color: #893e2b;
-  border-color: #893e2b;
+  background-color: var(--accent-hover);
+  border-color: var(--accent-hover);
+}
+
+button:not(:disabled):active {
+  transform: scale(0.98);
 }
 
 button:disabled {
@@ -121,19 +142,23 @@ h3 {
 
 h1 {
   font-family: Georgia, 'Times New Roman', serif;
-  font-size: 2rem;
+  font-size: var(--fs-xl);
   font-weight: 400;
   letter-spacing: -0.035em;
+  text-wrap: balance;
 }
 
-h2 { font-size: 1.2rem; }
+h2 {
+  font-size: var(--fs-lg);
+  text-wrap: balance;
+}
 
 .card {
   background: var(--surface);
-  border: 1px solid var(--border);
+  border: 1px solid color-mix(in srgb, var(--border) 75%, transparent);
   border-radius: var(--radius);
   padding: 18px;
-  box-shadow: 0 1px 2px rgb(55 45 30 / 0.025);
+  box-shadow: var(--shadow-1);
 }
 
 .muted {
@@ -141,7 +166,7 @@ h2 { font-size: 1.2rem; }
 }
 
 .small {
-  font-size: 0.85rem;
+  font-size: var(--fs-sm);
 }
 
 input[type='text'],
@@ -199,7 +224,7 @@ select:focus {
   min-height: 40px;
   padding: 0 14px;
   border-radius: 999px;
-  font-size: 0.9rem;
+  font-size: var(--fs-sm);
   background: transparent;
   color: var(--muted);
 }
@@ -234,7 +259,7 @@ select:focus {
 }
 
 .section-title {
-  font-size: 0.75rem;
+  font-size: var(--fs-xs);
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.09em;
@@ -276,13 +301,47 @@ dialog.sheet {
   max-height: calc(100dvh - 24px);
   padding: 16px;
   border: 1px solid var(--border);
-  border-radius: 16px;
+  border-radius: var(--radius);
   background: var(--surface);
   color: var(--text);
 }
 
 dialog.sheet::backdrop {
-  background: rgb(45 38 31 / 0.42);
+  background: var(--backdrop);
+}
+
+/* Dialogs fade and rise in, fade out; no JS involved. */
+dialog.sheet {
+  opacity: 0;
+  transform: translateY(8px);
+  transition: opacity var(--dur-2) var(--ease-out), transform var(--dur-2) var(--ease-out), overlay var(--dur-2) allow-discrete, display var(--dur-2) allow-discrete;
+}
+
+dialog.sheet[open] {
+  opacity: 1;
+  transform: none;
+}
+
+@starting-style {
+  dialog.sheet[open] {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+}
+
+dialog.sheet::backdrop {
+  opacity: 0;
+  transition: opacity var(--dur-2) var(--ease-out), overlay var(--dur-2) allow-discrete, display var(--dur-2) allow-discrete;
+}
+
+dialog.sheet[open]::backdrop {
+  opacity: 1;
+}
+
+@starting-style {
+  dialog.sheet[open]::backdrop {
+    opacity: 0;
+  }
 }
 
 .lbl {
@@ -299,32 +358,51 @@ dialog.sheet::backdrop {
   font-variant-numeric: tabular-nums;
 }
 
-h1 {
-  font-size: 1.5rem;
-}
-
-h2 {
-  font-size: 1.15rem;
-}
-
 /* Keep motion optional and keyboard focus visible across the interface. */
 @media (prefers-reduced-motion: reduce) {
-  *, *::before, *::after { transition-duration: 0.01ms !important; scroll-behavior: auto !important; }
+  *, *::before, *::after { transition-duration: 0.01ms !important; animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; scroll-behavior: auto !important; }
 }
 
 [data-theme="dark"] {
   color-scheme: dark;
   --bg: #262624; --surface: #302f2d; --surface-2: #403b37; --border: #615b54;
   --text: #f5eee6; --muted: #d1c5b9; --accent: #e7ae93; --accent-text: #25201d; --danger: #ffb5aa; --ok: #aed3b4;
-  --mesh-cream: radial-gradient(at 12% 18%, #3A2E28 0px, transparent 50%), radial-gradient(at 88% 8%, #2F2B27 0px, transparent 50%), radial-gradient(at 75% 88%, #3B2D26 0px, transparent 55%), radial-gradient(at 8% 92%, #2A2E29 0px, transparent 55%), #262624;
+  --mesh-cream: radial-gradient(ellipse 80% 45% at 50% -8%, rgb(231 174 147 / 0.07), transparent 70%), radial-gradient(at 12% 18%, #3A2E28 0px, transparent 50%), radial-gradient(at 88% 8%, #2F2B27 0px, transparent 50%), radial-gradient(at 75% 88%, #3B2D26 0px, transparent 55%), radial-gradient(at 8% 92%, #2A2E29 0px, transparent 55%), #262624;
   --mesh-terracotta: radial-gradient(at 20% 15%, #5a3c32 0px, transparent 60%), radial-gradient(at 85% 25%, #44352f 0px, transparent 60%), radial-gradient(at 60% 90%, #51362d 0px, transparent 60%), #302c29;
-  --mesh-sand: radial-gradient(at 18% 22%, #453e33, transparent 60%), #302e29;
-  --mesh-sage: radial-gradient(at 15% 20%, #394236, transparent 60%), #2c302b;
-  --mesh-mist: radial-gradient(at 18% 18%, #35414a, transparent 60%), #292e32;
-  --mesh-lilac: radial-gradient(at 15% 22%, #453b4a, transparent 60%), #302c32;
 }
-[data-theme="dark"] button.primary:not(:disabled):hover { background: #f1bca5; border-color: #f1bca5; }
+[data-theme="dark"] {
+  --accent-hover: color-mix(in srgb, var(--accent) 80%, white);
+  --shadow-1: inset 0 1px 0 rgb(255 255 255 / 0.05), 0 1px 2px rgb(0 0 0 / 0.3);
+}
 
-/* The reveal is animated explicitly; disable the browser's default crossfade. */
+/* «Горизонт» (src/lib/horizon.ts): every part of the theme transition is animated explicitly. */
 ::view-transition-old(root), ::view-transition-new(root) { animation: none; mix-blend-mode: normal; }
-::view-transition-new(root) { z-index: 2; }
+::view-transition-group(horizon-rim), ::view-transition-new(horizon-rim) { animation: none; }
+::view-transition-group(theme-toggle), ::view-transition-new(theme-toggle) { animation: none; }
+::view-transition-old(theme-toggle) { animation: none; opacity: 0; }
+
+/* The rim band sits just below the viewport; the transition moves its layer with transform only. */
+.horizon-rim { position: fixed; left: 0; top: 100%; width: 100vw; pointer-events: none; view-transition-name: horizon-rim; }
+
+/* Icons (src/components/Icon.svelte). */
+.icon { display: inline-block; flex: none; vertical-align: -0.15em; }
+.icon-btn { display: inline-grid; place-items: center; }
+
+/* Checkmark drawn on completion. */
+.tick { width: 1em; height: 1em; flex: none; fill: none; stroke: currentColor; stroke-width: 2.4; stroke-linecap: round; stroke-linejoin: round; }
+.tick path { stroke-dasharray: 1; animation: tick-draw 220ms var(--ease-out) both; }
+@keyframes tick-draw { from { stroke-dashoffset: 1; } to { stroke-dashoffset: 0; } }
+
+/* Progress bars grow with transform from the left edge (--p is 0..1). */
+.bar > i { width: 100%; transform: scaleX(clamp(0, var(--p, 1), 1)); transform-origin: left; transition: transform var(--dur-4) var(--ease-out); }
+
+/* Expandable blocks: the height animates through grid rows. */
+.reveal { display: grid; grid-template-rows: 0fr; transition: grid-template-rows var(--dur-2) var(--ease-out); }
+.reveal.open { grid-template-rows: 1fr; }
+.reveal > * { min-height: 0; overflow: hidden; }
+
+/* Segmented control with a sliding plate (--n options, --i active). */
+.seg.sliding { position: relative; display: grid; grid-template-columns: repeat(var(--n), minmax(0, 1fr)); }
+.seg.sliding .plate { position: absolute; top: 4px; bottom: 4px; left: 4px; width: calc((100% - 8px - (var(--n) - 1) * 4px) / var(--n)); border-radius: calc(var(--radius) - 4px); background: var(--surface-2); transform: translateX(calc(var(--i) * (100% + 4px))); transition: transform var(--dur-3) var(--ease-out); }
+.seg.sliding button { position: relative; }
+.seg.sliding button.on { background: transparent; }

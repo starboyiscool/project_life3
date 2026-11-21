@@ -6,6 +6,7 @@
   import DataScreen from './DataScreen.svelte';
   import SettingsScreen from './SettingsScreen.svelte';
   import Pane from '../components/Pane.svelte';
+  import Icon from '../components/Icon.svelte';
   import { nav, go, type MorePage } from '../lib/nav.svelte';
 
   const pages: { id: Exclude<MorePage, 'menu'>; label: string; hint: string }[] = [
@@ -29,7 +30,7 @@
     {/each}
   {:else}
     <div class="row">
-      <button class="icon-btn" aria-label="Назад" onclick={() => go('more')}>←</button>
+      <button class="icon-btn" aria-label="Назад" onclick={() => go('more')}><Icon name="back" /></button>
       <h1>{pages.find((p) => p.id === nav.more)?.label}</h1>
     </div>
   {/if}

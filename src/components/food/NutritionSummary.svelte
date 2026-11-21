@@ -28,7 +28,7 @@
       <span class="num"><b>{t.kcal}</b><span class="muted">&nbsp;/ {g.kcal} ккал</span></span>
       <span class="muted small">{kcal.label}</span>
     </div>
-    <div class="bar"><i style:width="{kcal.share * 100}%"></i></div>
+    <div class="bar"><i style:--p={(kcal.share * 100) / 100}></i></div>
     <span class="muted small num">
       осталось Б {left(t.p, g.p)} · Ж {left(t.f, g.f)} · У {left(t.c, g.c)} г
     </span>

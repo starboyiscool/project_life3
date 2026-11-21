@@ -155,7 +155,7 @@
   }
 
   .add {
-    font-size: 1.4rem;
+    font-size: var(--fs-xl);
     min-height: 44px;
   }
 

@@ -1,4 +1,5 @@
 <script lang="ts">
+  import Icon from './Icon.svelte';
   import { CATEGORIES, type Category, type Task } from '../lib/logic/tasks';
   import { moveTask, removeTask, restoreRemovedTask, updateTask } from '../lib/repo/tasks';
   import { notifyAction } from '../lib/toast.svelte';
@@ -73,7 +74,7 @@
       <h2>Задача</h2>
       <input bind:value={title} aria-label="Название" />
 
-      <button type="button" class="chip" class:on={isMit} onclick={() => (isMit = !isMit)}>★ Приоритетная (MIT)</button>
+      <button type="button" class="chip" class:on={isMit} onclick={() => (isMit = !isMit)}><Icon name="star" size={13} filled /> Приоритетная (MIT)</button>
 
       <div class="chips">
         {#each CATEGORIES as c (c.id)}
@@ -128,7 +129,7 @@
   }
 
   dialog::backdrop {
-    background: rgb(45 38 31 / 0.42);
+    background: var(--backdrop);
   }
 
   .lbl {

@@ -99,7 +99,7 @@
   }
 
   .stats b {
-    font-size: 1.5rem;
+    font-size: var(--fs-xl);
   }
 
   summary {

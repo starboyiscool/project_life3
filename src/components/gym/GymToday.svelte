@@ -1,4 +1,5 @@
 <script lang="ts">
+  import Icon from '../Icon.svelte';
   import { days } from '../../lib/state.svelte';
   import { useGym } from '../../lib/gym-data.svelte';
   import { go } from '../../lib/nav.svelte';
@@ -27,7 +28,7 @@
   {:else if today}
     <div class="row spread">
       <span>
-        Сделано: {today.items.length} упр.{#if recs}&nbsp;· <span class="pr">★ {recs}</span>{/if}
+        Сделано: {today.items.length} упр.{#if recs}&nbsp;· <span class="pr"><Icon name="star" size={13} filled /> {recs}</span>{/if}
       </span>
       <button class="link" onclick={() => go('gym', 'history')}>Подробнее</button>
     </div>

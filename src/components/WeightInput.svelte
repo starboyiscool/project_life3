@@ -4,6 +4,7 @@
   import { listWeights, saveWeight, type WeightEntry } from '../lib/repo/weights';
   import { formatKg, formatSigned, parseKg, weeklyTrend } from '../lib/logic/weight';
   import { relativeDayLabel } from '../lib/logic/day';
+  import Icon from './Icon.svelte';
 
   let { compact = false }: { compact?: boolean } = $props();
 
@@ -68,7 +69,7 @@
         autocomplete="off"
       />
       <button type="submit" class="primary" disabled={parsed == null}>Сохранить</button>
-      {#if editing}<button type="button" onclick={() => (editing = false)}>✕</button>{/if}
+      {#if editing}<button type="button" class="icon-btn" aria-label="Отмена" onclick={() => (editing = false)}><Icon name="close" size={18} /></button>{/if}
     </form>
     {#if !compact && text && parsed == null}<p class="muted small">Введите вес в кг, например 71,4</p>{/if}
   {/if}
@@ -76,7 +77,7 @@
 
 <style>
   .big {
-    font-size: 1.4rem;
+    font-size: var(--fs-xl);
     font-weight: 600;
   }
 

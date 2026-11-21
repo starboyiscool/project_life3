@@ -1,0 +1,278 @@
+[
+  {
+    "file": "src/app.css",
+    "why": "глубина карточек: двухслойная тень",
+    "find": "  --shadow-1: 0 1px 2px rgb(55 45 30 / 0.025);",
+    "replace": "  --shadow-1: 0 1px 2px rgb(55 45 30 / 0.04), 0 6px 16px -8px rgb(55 45 30 / 0.12);"
+  },
+  {
+    "file": "src/app.css",
+    "why": "тёмная тема: верхняя подсветка карточек",
+    "find": "[data-theme=\"dark\"] {\n  --accent-hover: color-mix(in srgb, var(--accent) 80%, white);\n}",
+    "replace": "[data-theme=\"dark\"] {\n  --accent-hover: color-mix(in srgb, var(--accent) 80%, white);\n  --shadow-1: inset 0 1px 0 rgb(255 255 255 / 0.05), 0 1px 2px rgb(0 0 0 / 0.3);\n}"
+  },
+  {
+    "file": "src/app.css",
+    "why": "утончённая рамка карточек",
+    "find": ".card {\n  background: var(--surface);\n  border: 1px solid var(--border);",
+    "replace": ".card {\n  background: var(--surface);\n  border: 1px solid color-mix(in srgb, var(--border) 75%, transparent);"
+  },
+  {
+    "file": "src/app.css",
+    "why": "переход transform для нажатия",
+    "find": "  transition: background-color var(--dur-2) var(--ease-out), border-color var(--dur-2) var(--ease-out);",
+    "replace": "  transition: background-color var(--dur-2) var(--ease-out), border-color var(--dur-2) var(--ease-out), transform var(--dur-1) var(--ease-out);"
+  },
+  {
+    "file": "src/app.css",
+    "why": ":active scale(.98) для кнопок и карточек-кнопок",
+    "find": "button:disabled {\n  opacity: 0.5;",
+    "replace": "button:not(:disabled):active {\n  transform: scale(0.98);\n}\n\nbutton:disabled {\n  opacity: 0.5;"
+  },
+  {
+    "file": "src/app.css",
+    "why": "reduced-motion выключает и CSS-анимации",
+    "find": "  *, *::before, *::after { transition-duration: 0.01ms !important; scroll-behavior: auto !important; }",
+    "replace": "  *, *::before, *::after { transition-duration: 0.01ms !important; animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; scroll-behavior: auto !important; }"
+  },
+  {
+    "file": "src/app.css",
+    "why": "диалоги: появление через @starting-style",
+    "find": "dialog.sheet::backdrop {\n  background: var(--backdrop);\n}",
+    "replace": "dialog.sheet::backdrop {\n  background: var(--backdrop);\n}\n\n/* Dialogs fade and rise in, fade out; no JS involved. */\ndialog.sheet {\n  opacity: 0;\n  transform: translateY(8px);\n  transition: opacity var(--dur-2) var(--ease-out), transform var(--dur-2) var(--ease-out), overlay var(--dur-2) allow-discrete, display var(--dur-2) allow-discrete;\n}\n\ndialog.sheet[open] {\n  opacity: 1;\n  transform: none;\n}\n\n@starting-style {\n  dialog.sheet[open] {\n    opacity: 0;\n    transform: translateY(8px);\n  }\n}\n\ndialog.sheet::backdrop {\n  opacity: 0;\n  transition: opacity var(--dur-2) var(--ease-out), overlay var(--dur-2) allow-discrete, display var(--dur-2) allow-discrete;\n}\n\ndialog.sheet[open]::backdrop {\n  opacity: 1;\n}\n\n@starting-style {\n  dialog.sheet[open]::backdrop {\n    opacity: 0;\n  }\n}"
+  },
+  {
+    "file": "src/app.css",
+    "why": "тёмная тема: тёплое свечение сверху",
+    "find": "--mesh-cream: radial-gradient(at 12% 18%, #3A2E28 0px",
+    "replace": "--mesh-cream: radial-gradient(ellipse 80% 45% at 50% -8%, rgb(231 174 147 / 0.07), transparent 70%), radial-gradient(at 12% 18%, #3A2E28 0px"
+  },
+  {
+    "file": "src/app.css",
+    "why": "общие стили: иконки, галочка, прогресс, раскрытие, сегменты",
+    "find": ".horizon-rim { position: fixed; left: 0; top: 100%; width: 100vw; pointer-events: none; view-transition-name: horizon-rim; }",
+    "replace": ".horizon-rim { position: fixed; left: 0; top: 100%; width: 100vw; pointer-events: none; view-transition-name: horizon-rim; }\n\n/* Icons (src/components/Icon.svelte). */\n.icon { display: inline-block; flex: none; vertical-align: -0.15em; }\n.icon-btn { display: inline-grid; place-items: center; }\n\n/* Checkmark drawn on completion. */\n.tick { width: 1em; height: 1em; flex: none; fill: none; stroke: currentColor; stroke-width: 2.4; stroke-linecap: round; stroke-linejoin: round; }\n.tick path { stroke-dasharray: 1; animation: tick-draw 220ms var(--ease-out) both; }\n@keyframes tick-draw { from { stroke-dashoffset: 1; } to { stroke-dashoffset: 0; } }\n\n/* Progress bars grow with transform from the left edge (--p is 0..1). */\n.bar > i { width: 100%; transform: scaleX(clamp(0, var(--p, 1), 1)); transform-origin: left; transition: transform var(--dur-4) var(--ease-out); }\n\n/* Expandable blocks: the height animates through grid rows. */\n.reveal { display: grid; grid-template-rows: 0fr; transition: grid-template-rows var(--dur-2) var(--ease-out); }\n.reveal.open { grid-template-rows: 1fr; }\n.reveal > * { min-height: 0; overflow: hidden; }\n\n/* Segmented control with a sliding plate (--n options, --i active). */\n.seg.sliding { position: relative; display: grid; grid-template-columns: repeat(var(--n), minmax(0, 1fr)); }\n.seg.sliding .plate { position: absolute; top: 4px; bottom: 4px; left: 4px; width: calc((100% - 8px - (var(--n) - 1) * 4px) / var(--n)); border-radius: calc(var(--radius) - 4px); background: var(--surface-2); transform: translateX(calc(var(--i) * (100% + 4px))); transition: transform var(--dur-3) var(--ease-out); }\n.seg.sliding button { position: relative; }\n.seg.sliding button.on { background: transparent; }"
+  },
+  {
+    "file": "src/App.svelte",
+    "why": "импорты Icon и fly",
+    "find": "  import ThemeToggle from './components/ThemeToggle.svelte';",
+    "replace": "  import ThemeToggle from './components/ThemeToggle.svelte';\n  import Icon from './components/Icon.svelte';\n  import { fly } from 'svelte/transition';"
+  },
+  {
+    "file": "src/App.svelte",
+    "why": "длительность с учётом reduced-motion",
+    "find": "  useThemeSync();",
+    "replace": "  useThemeSync();\n\n  const motion = (ms: number) => (matchMedia('(prefers-reduced-motion: reduce)').matches ? 0 : ms);"
+  },
+  {
+    "file": "src/App.svelte",
+    "why": "тосты: всплытие и уход вниз",
+    "find": "      <div class=\"toast {t.kind}\">",
+    "replace": "      <div class=\"toast {t.kind}\" in:fly={{ y: 12, duration: motion(200) }} out:fly={{ y: 12, duration: motion(200) }}>"
+  },
+  {
+    "file": "src/App.svelte",
+    "why": "✕ в тосте → Icon",
+    "find": "aria-label=\"Закрыть уведомление\" onclick={() => dismiss(t.id)}>✕</button>",
+    "replace": "aria-label=\"Закрыть уведомление\" onclick={() => dismiss(t.id)}><Icon name=\"close\" size={18} /></button>"
+  },
+  {
+    "file": "src/App.svelte",
+    "why": "навигация: плашка (разметка)",
+    "find": "  <nav>\n    {#each tabs as t (t.id)}",
+    "replace": "  <nav>\n    <div class=\"tabs\" style:--i={tabs.findIndex((t) => t.id === nav.tab)}>\n    <span class=\"plate\" aria-hidden=\"true\"></span>\n    {#each tabs as t (t.id)}"
+  },
+  {
+    "file": "src/App.svelte",
+    "why": "навигация: закрытие .tabs",
+    "find": "    {/each}\n  </nav>",
+    "replace": "    {/each}\n    </div>\n  </nav>"
+  },
+  {
+    "file": "src/App.svelte",
+    "why": "навигация: полупрозрачный фон, blur, плашка",
+    "find": "    background: var(--surface);\n    border-top: 1px solid var(--border);\n    justify-content: center;\n    z-index: 10;\n  }",
+    "replace": "    background: color-mix(in srgb, var(--surface) 84%, transparent);\n    backdrop-filter: blur(14px);\n    border-top: 1px solid var(--border);\n    justify-content: center;\n    z-index: 10;\n  }\n\n  .tabs {\n    position: relative;\n    display: grid;\n    grid-template-columns: repeat(5, minmax(0, 1fr));\n    gap: 2px;\n    width: min(100%, 568px);\n  }\n\n  /* Sliding plate under the active tab: transform only. */\n  .plate {\n    position: absolute;\n    top: 0;\n    bottom: 0;\n    left: 0;\n    width: calc((100% - 8px) / 5);\n    border-radius: var(--radius);\n    background: var(--surface-2);\n    transform: translateX(calc(var(--i) * (100% + 2px)));\n    transition: transform var(--dur-3) var(--ease-out);\n  }"
+  },
+  {
+    "file": "src/App.svelte",
+    "why": "навигация: кнопки поверх плашки",
+    "find": "  nav button {\n    flex: 1;\n    min-width: 0;\n    max-width: 112px;\n    min-height: 58px;",
+    "replace": "  nav button {\n    position: relative;\n    min-width: 0;\n    min-height: 58px;"
+  },
+  {
+    "file": "src/App.svelte",
+    "why": "навигация: фон активной вкладки теперь плашка",
+    "find": "  nav button.active {\n    color: var(--accent);\n    background: var(--surface-2);\n    font-weight: 700;\n  }",
+    "replace": "  nav button.active {\n    color: var(--accent);\n    font-weight: 700;\n  }"
+  },
+  {
+    "file": "src/screens/NutritionScreen.svelte",
+    "why": "сегменты со скользящей плашкой",
+    "find": "  <div class=\"seg\">\n    {#each pages as p (p.id)}\n      <button class:on={nav.food === p.id}",
+    "replace": "  <div class=\"seg sliding\" style:--n={pages.length} style:--i={pages.findIndex((p) => p.id === nav.food)}>\n    <span class=\"plate\" aria-hidden=\"true\"></span>\n    {#each pages as p (p.id)}\n      <button class:on={nav.food === p.id}"
+  },
+  {
+    "file": "src/screens/GymScreen.svelte",
+    "why": "сегменты со скользящей плашкой",
+    "find": "    <div class=\"seg\">\n      {#each pages as p (p.id)}\n        <button class:on={nav.gym === p.id}",
+    "replace": "    <div class=\"seg sliding\" style:--n={pages.length} style:--i={pages.findIndex((p) => p.id === nav.gym)}>\n      <span class=\"plate\" aria-hidden=\"true\"></span>\n      {#each pages as p (p.id)}\n        <button class:on={nav.gym === p.id}"
+  },
+  {
+    "file": "src/screens/MoreScreen.svelte",
+    "why": "импорт Icon",
+    "find": "  import Pane from '../components/Pane.svelte';",
+    "replace": "  import Pane from '../components/Pane.svelte';\n  import Icon from '../components/Icon.svelte';"
+  },
+  {
+    "file": "src/screens/GymScreen.svelte",
+    "why": "импорт Icon",
+    "find": "  import Pane from '../components/Pane.svelte';",
+    "replace": "  import Pane from '../components/Pane.svelte';\n  import Icon from '../components/Icon.svelte';"
+  },
+  {
+    "file": "src/screens/MoreScreen.svelte",
+    "why": "← → Icon",
+    "find": "onclick={() => go('more')}>←</button>",
+    "replace": "onclick={() => go('more')}><Icon name=\"back\" /></button>"
+  },
+  {
+    "file": "src/screens/GymScreen.svelte",
+    "why": "← → Icon",
+    "find": "onclick={() => go('gym', 'now')}>←</button>",
+    "replace": "onclick={() => go('gym', 'now')}><Icon name=\"back\" /></button>"
+  },
+  {
+    "file": "src/components/WeightInput.svelte",
+    "why": "импорт Icon",
+    "find": "  import { relativeDayLabel } from '../lib/logic/day';",
+    "replace": "  import { relativeDayLabel } from '../lib/logic/day';\n  import Icon from './Icon.svelte';"
+  },
+  {
+    "file": "src/components/WeightInput.svelte",
+    "why": "✕ → Icon",
+    "find": "{#if editing}<button type=\"button\" onclick={() => (editing = false)}>✕</button>{/if}",
+    "replace": "{#if editing}<button type=\"button\" class=\"icon-btn\" aria-label=\"Отмена\" onclick={() => (editing = false)}><Icon name=\"close\" size={18} /></button>{/if}"
+  },
+  {
+    "file": "src/screens/SettingsScreen.svelte",
+    "why": "импорт Icon",
+    "find": "  import { setTheme } from '../lib/theme.svelte';",
+    "replace": "  import { setTheme } from '../lib/theme.svelte';\n  import Icon from '../components/Icon.svelte';"
+  },
+  {
+    "file": "src/screens/SettingsScreen.svelte",
+    "why": "↑ → Icon",
+    "find": "onclick={() => move(i, -1)}>↑</button>",
+    "replace": "onclick={() => move(i, -1)}><Icon name=\"up\" size={18} /></button>"
+  },
+  {
+    "file": "src/screens/SettingsScreen.svelte",
+    "why": "↓ → Icon",
+    "find": "onclick={() => move(i, 1)}>↓</button>",
+    "replace": "onclick={() => move(i, 1)}><Icon name=\"down\" size={18} /></button>"
+  },
+  {
+    "file": "src/screens/SettingsScreen.svelte",
+    "why": "✕ → Icon",
+    "find": "          >✕</button\n        >",
+    "replace": "          ><Icon name=\"close\" size={18} /></button\n        >"
+  },
+  {
+    "file": "src/components/TaskRow.svelte",
+    "why": "импорт Icon",
+    "find": "  import { act } from '../lib/state.svelte';",
+    "replace": "  import { act } from '../lib/state.svelte';\n  import Icon from './Icon.svelte';"
+  },
+  {
+    "file": "src/components/TaskRow.svelte",
+    "why": "галочка рисуется",
+    "find": "<span class=\"box\">{#if done}✓{/if}</span>",
+    "replace": "<span class=\"box\">{#if done}<svg class=\"tick\" viewBox=\"0 0 24 24\" aria-hidden=\"true\"><path d=\"M5 12.5l4.5 4.5L19 7.5\" pathLength=\"1\" /></svg>{/if}</span>"
+  },
+  {
+    "file": "src/components/TaskRow.svelte",
+    "why": "★ → Icon",
+    "find": "<span class=\"star\" aria-label=\"приоритет\">★</span>",
+    "replace": "<span class=\"star\"><Icon name=\"star\" size={14} filled label=\"приоритет\" /></span>"
+  },
+  {
+    "file": "src/components/TaskRow.svelte",
+    "why": "цвет чекбокса плавно",
+    "find": "    color: var(--accent-text);\n  }\n\n  .done .box {",
+    "replace": "    color: var(--accent-text);\n    transition: background-color 220ms var(--ease-out), border-color 220ms var(--ease-out);\n  }\n\n  .done .box {"
+  },
+  {
+    "file": "src/components/TaskRow.svelte",
+    "why": "текст выполненной задачи затухает",
+    "find": "  .title {\n    overflow-wrap: anywhere;\n  }\n\n  .done .title {\n    color: var(--muted);\n    text-decoration: line-through;\n  }",
+    "replace": "  .title {\n    overflow-wrap: anywhere;\n    transition: opacity 220ms var(--ease-out);\n  }\n\n  .done .title {\n    opacity: 0.6;\n    text-decoration: line-through;\n  }"
+  },
+  {
+    "file": "src/components/HabitChecklist.svelte",
+    "why": "галочка привычки рисуется",
+    "find": "{on ? '✓ ' : ''}{h.name}",
+    "replace": "{#if on}<svg class=\"tick\" viewBox=\"0 0 24 24\" aria-hidden=\"true\"><path d=\"M5 12.5l4.5 4.5L19 7.5\" pathLength=\"1\" /></svg>{/if}{h.name}"
+  },
+  {
+    "file": "src/components/HabitChecklist.svelte",
+    "why": "чип: иконка и текст в ряд",
+    "find": "  .habit {\n    min-height: 44px;\n  }",
+    "replace": "  .habit {\n    min-height: 44px;\n    display: inline-flex;\n    align-items: center;\n    gap: 6px;\n  }"
+  },
+  {
+    "file": "src/components/gym/WorkoutView.svelte",
+    "why": "импорт Icon",
+    "find": "  import { nav } from '../../lib/nav.svelte';",
+    "replace": "  import { nav } from '../../lib/nav.svelte';\n  import Icon from '../Icon.svelte';"
+  },
+  {
+    "file": "src/components/gym/WorkoutView.svelte",
+    "why": "⋯ → Icon",
+    "find": "<summary aria-label=\"Действия с упражнением\">⋯</summary>",
+    "replace": "<summary aria-label=\"Действия с упражнением\"><Icon name=\"more\" size={22} /></summary>"
+  },
+  {
+    "file": "src/components/gym/WorkoutView.svelte",
+    "why": "↑ → Icon",
+    "find": "onclick={() => move(-1)}>↑ Выше</button>",
+    "replace": "onclick={() => move(-1)}><Icon name=\"up\" size={16} /> Выше</button>"
+  },
+  {
+    "file": "src/components/gym/WorkoutView.svelte",
+    "why": "↓ → Icon",
+    "find": "onclick={() => move(1)}>↓ Ниже</button>",
+    "replace": "onclick={() => move(1)}><Icon name=\"down\" size={16} /> Ниже</button>"
+  },
+  {
+    "file": "src/components/gym/WorkoutView.svelte",
+    "why": "★ → Icon",
+    "find": ">★ рекорд</span>",
+    "replace": "><Icon name=\"star\" size={13} filled /> рекорд</span>"
+  },
+  {
+    "file": "src/components/gym/WorkoutView.svelte",
+    "why": "− вес → Icon",
+    "find": "aria-label=\"Минус {fmtKg(step)} кг\">−</button>",
+    "replace": "aria-label=\"Минус {fmtKg(step)} кг\"><Icon name=\"minus\" /></button>"
+  },
+  {
+    "file": "src/components/gym/WorkoutView.svelte",
+    "why": "+ вес → Icon",
+    "find": "aria-label=\"Плюс {fmtKg(step)} кг\">+</button>",
+    "replace": "aria-label=\"Плюс {fmtKg(step)} кг\"><Icon name=\"plus\" /></button>"
+  },
+  {
+    "file": "src/components/gym/WorkoutView.svelte",
+    "why": "− повтор → Icon",
+    "find": "aria-label=\"Минус повтор\">−</button>",
+    "replace": "aria-label=\"Минус повтор\"><Icon name=\"minus\" /></button>"
+  },
+  {
+    "file": "src/components/gym/WorkoutView.svelte",
+    "why": "+ повтор → Icon",
+    "find": "aria-label=\"Плюс повтор\">+</button>",
+    "replace": "aria-label=\"Плюс повтор\"><Icon name=\"plus\" /></button>"
+  }
+]

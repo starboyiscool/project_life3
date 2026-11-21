@@ -1,5 +1,7 @@
 <script lang="ts">
   import { act, nutritionSettings, saveNutritionSettings, saveSettings, settings } from '../lib/state.svelte';
+  import { setTheme } from '../lib/theme.svelte';
+  import Icon from '../components/Icon.svelte';
   import { TZ } from '../lib/logic/day';
   import { DEFAULT_MEALS } from '../lib/logic/nutrition';
 
@@ -29,7 +31,7 @@
 <div class="stack">
   <section class="card stack">
     <label class="lbl"><span>Тема оформления</span>
-      <select value={settings.theme} onchange={(e) => act(() => saveSettings({ theme: e.currentTarget.value as 'light' | 'dark' | 'system' }), 'Сохранено')}>
+      <select value={settings.theme} onchange={(e) => setTheme(e.currentTarget.value as 'light' | 'dark' | 'system', 'Сохранено')}>
         <option value="system">Как в системе</option><option value="light">Светлая</option><option value="dark">Тёмная</option>
       </select>
     </label>
@@ -59,14 +61,14 @@
     {#each nutritionSettings.meals as m, i (m)}
       <div class="row">
         <span class="grow">{m}</span>
-        <button class="icon-btn" aria-label="Выше" disabled={i === 0} onclick={() => move(i, -1)}>↑</button>
-        <button class="icon-btn" aria-label="Ниже" disabled={i === nutritionSettings.meals.length - 1} onclick={() => move(i, 1)}>↓</button>
+        <button class="icon-btn" aria-label="Выше" disabled={i === 0} onclick={() => move(i, -1)}><Icon name="up" size={18} /></button>
+        <button class="icon-btn" aria-label="Ниже" disabled={i === nutritionSettings.meals.length - 1} onclick={() => move(i, 1)}><Icon name="down" size={18} /></button>
         <button
           class="icon-btn"
           aria-label="Убрать"
           disabled={nutritionSettings.meals.length <= 1}
           onclick={() => confirm(`Убрать «${m}» из списка? Записи в дневнике останутся.`) && setMeals(nutritionSettings.meals.filter((x) => x !== m))}
-          >✕</button
+          ><Icon name="close" size={18} /></button
         >
       </div>
     {/each}

@@ -35,7 +35,7 @@
           aria-pressed={on}
           onclick={() => act(() => setHabitDone(db, h.id!, data.current.today, !on))}
         >
-          {on ? '✓ ' : ''}{h.name}{#if h.schedule.type === 'weekly'}<span class="muted cnt">{wp.done}/{wp.target}</span>{/if}
+          {#if on}<svg class="tick" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5" pathLength="1" /></svg>{/if}{h.name}{#if h.schedule.type === 'weekly'}<span class="muted cnt">{wp.done}/{wp.target}</span>{/if}
         </button>
       {/each}
     </div>
@@ -45,6 +45,9 @@
 <style>
   .habit {
     min-height: 44px;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
   }
 
   .habit.on {
