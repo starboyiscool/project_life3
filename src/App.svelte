@@ -35,7 +35,7 @@
     </div>
   {/if}
 
-  <div class="brand" aria-label="Life Tracker"><svg class="brand-mark" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v18M3 12h18M5.6 5.6l12.8 12.8M18.4 5.6 5.6 18.4" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" /></svg><span>LIFE TRACKER</span><ThemeToggle /></div>
+  <div class="brand" aria-label="Life Tracker"><svg class="brand-mark" viewBox="0 0 24 24" aria-hidden="true"><rect x="3.5" y="3.5" width="4.6" height="4.6" rx="1.4" fill="currentColor" /><rect x="9.5" y="3.5" width="4.6" height="4.6" rx="1.4" fill="currentColor" /><rect x="15.5" y="3.5" width="4.6" height="4.6" rx="1.4" fill="currentColor" /><rect x="3.5" y="9.5" width="4.6" height="4.6" rx="1.4" fill="currentColor" /><rect x="9.5" y="9.5" width="4.6" height="4.6" rx="1.4" fill="currentColor" /><rect x="15.5" y="9.5" width="4.6" height="4.6" rx="1.4" fill="currentColor" fill-opacity=".3" /><rect x="3.5" y="15.5" width="4.6" height="4.6" rx="1.4" fill="currentColor" /><rect x="9.5" y="15.5" width="4.6" height="4.6" rx="1.4" fill="currentColor" fill-opacity=".3" /><rect x="15.5" y="15.5" width="4.6" height="4.6" rx="1.4" fill="currentColor" fill-opacity=".3" /></svg><span>LIFE TRACKER</span><ThemeToggle /></div>
 
   <!-- Screens mount once on first visit and are only hidden afterwards (Pane = lazy keep-alive). -->
   <main>
