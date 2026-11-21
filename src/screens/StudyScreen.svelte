@@ -1,4 +1,5 @@
 <script lang="ts">
+  import Icon from '../components/Icon.svelte';
   import { db } from '../lib/app-db';
   import { act, days, live, settings } from '../lib/state.svelte';
   import { listSubjects, listWorks, saveSubject, saveWork, deleteSubject, deleteWork, workToTask } from '../lib/repo/study';
@@ -98,11 +99,11 @@
           {@const range = workWeekRange(w, subject, settings.semesterNumber, settings.semesterStart)}
           <div class="work stack">
             <div><b>{w.title}</b> {#if w.isDebt !== false}<span class="badge">Долг</span>{/if}<p class="muted small">{kindLabel(w.kind)} · {statusLabel(w.status)}{#if w.deadlineWeek} · {w.deadlineWeek}-я неделя семестра{#if range} ({formatDayShort(range.from)} — {formatDayShort(range.to)}){/if}{/if}{#if w.deadline} · {w.deadlineApproximate ? 'примерно до ' : 'срок '}{w.deadline}{/if}</p>{#if w.note}<p class="small">{w.note}</p>{/if}</div>
-            <div class="chips"><button class="small" onclick={() => editWork(subject.id!, w)}>Изменить</button>{#if w.status !== 'passed'}<button class="small" onclick={() => addToToday(w, subject)}>+ Сегодня</button>{/if}<button class="link small danger" onclick={() => confirm(`Удалить работу «${w.title}»?`) && act(() => deleteWork(db, w.id!))}>Удалить</button></div>
+            <div class="chips"><button class="small" onclick={() => editWork(subject.id!, w)}>Изменить</button>{#if w.status !== 'passed'}<button class="small" onclick={() => addToToday(w, subject)}><Icon name="plus" size={16} /> Сегодня</button>{/if}<button class="link small danger" onclick={() => confirm(`Удалить работу «${w.title}»?`) && act(() => deleteWork(db, w.id!))}>Удалить</button></div>
           </div>
         {/each}
         {#if !items.length}<p class="muted small">Работ пока нет.</p>{/if}
-        <button onclick={() => editWork(subject.id!)}>+ Добавить работу</button>
+        <button onclick={() => editWork(subject.id!)}><Icon name="plus" size={16} /> Добавить работу</button>
       </section>
     {/if}
   {/each}

@@ -1,4 +1,5 @@
 <script lang="ts">
+  import Icon from '../Icon.svelte';
   import { db } from '../../lib/app-db';
   import { act, days, live, nutritionSettings, saveNutritionSettings } from '../../lib/state.svelte';
   import { addDays, formatDayShort } from '../../lib/logic/day';
@@ -112,7 +113,7 @@
           /><span>%</span>
         </div>
         <p class="num"><b>{suggested.kcal} ккал</b> · Б {suggested.p} · Ж {suggested.f} · У {suggested.c}</p>
-        <button onclick={() => fill(suggested!, 'calc')}>Взять в цели ↓</button>
+        <button onclick={() => fill(suggested!, 'calc')}>Взять в цели <Icon name="down" size={16} /></button>
       {/if}
     </section>
 
@@ -151,7 +152,7 @@
         <p class="num small muted">Основной обмен {estimate.bmr} ккал, с активностью {estimate.tdee} ккал</p>
         <p class="num"><b>{estimate.target.kcal} ккал</b> · Б {estimate.target.p} · Ж {estimate.target.f} · У {estimate.target.c}</p>
         <p class="muted small">Белок 1,8 г/кг{ns.goal === 'cut' ? ' (2 г/кг на сушке)' : ''}, жиры 0,9 г/кг, остальное углеводы.</p>
-        <button onclick={() => fill(estimate!.target, 'calc')}>Взять в цели ↓</button>
+        <button onclick={() => fill(estimate!.target, 'calc')}>Взять в цели <Icon name="down" size={16} /></button>
       {:else}
         <p class="muted small">Укажи пол и возраст для оценки.</p>
       {/if}

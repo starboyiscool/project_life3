@@ -74,7 +74,7 @@
           {#if it.repMax < it.repMin}<span class="small danger">Верх диапазона меньше низа.</span>{/if}
         </div>
       {/each}
-      <button type="button" onclick={() => (picking = true)}>+ Упражнение</button>
+      <button type="button" onclick={() => (picking = true)}><Icon name="plus" size={16} /> Упражнение</button>
       <div class="row spread">
         {#if t.id}<button type="button" class="link danger" onclick={remove}>Удалить</button>{:else}<span></span>{/if}
         <div class="row">

@@ -74,7 +74,7 @@
     {/each}
     <form class="row" onsubmit={addMeal}>
       <input bind:value={newMeal} placeholder="Новый приём, например «После зала»" aria-label="Новый приём пищи" />
-      <button type="submit" disabled={!newMeal.trim()}>+</button>
+      <button type="submit" disabled={!newMeal.trim()}><Icon name="plus" size={18} /></button>
     </form>
     {#if nutritionSettings.meals.join() !== DEFAULT_MEALS.join()}
       <button class="link small reset" onclick={() => setMeals([...DEFAULT_MEALS])}>Вернуть стандартные</button>

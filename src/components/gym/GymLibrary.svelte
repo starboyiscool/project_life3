@@ -1,4 +1,5 @@
 <script lang="ts">
+  import Icon from '../Icon.svelte';
   import ExerciseEditor from './ExerciseEditor.svelte';
   import Pane from '../Pane.svelte';
   import TemplateEditor from './TemplateEditor.svelte';
@@ -39,7 +40,7 @@
     {#if gym.data.templates.some((t) => t.suggestion)}
       <p class="muted small">«Предложение» — шаблон, который составило приложение, без весов. Поменяй под себя: после сохранения пометка исчезнет.</p>
     {/if}
-    <button onclick={() => (editTpl = newTpl())}>+ Новый шаблон</button>
+    <button onclick={() => (editTpl = newTpl())}><Icon name="plus" size={16} /> Новый шаблон</button>
     <p class="muted small">Шаблоны чередуются по порядку в списке: следующая тренировка берёт шаблон после последнего выполненного.</p>
   </Pane>
   <Pane active={seg === 'ex'}>
@@ -54,7 +55,7 @@
         {/each}
       </section>
     {/each}
-    <button onclick={() => (editEx = newEx())}>+ Новое упражнение</button>
+    <button onclick={() => (editEx = newEx())}><Icon name="plus" size={16} /> Новое упражнение</button>
     {#if archived.length}
       <details class="card">
         <summary class="muted">Архив ({archived.length})</summary>

@@ -1,4 +1,5 @@
 <script lang="ts">
+  import Icon from '../components/Icon.svelte';
   import { db } from '../lib/app-db';
   import { act, days, live } from '../lib/state.svelte';
   import { addDays, formatDayShort, weekStart, WEEKDAYS_SHORT } from '../lib/logic/day';
@@ -85,9 +86,9 @@
 
 <div class="stack">
   <div class="row spread">
-    <button class="icon-btn" aria-label="Предыдущая неделя" onclick={() => (week = addDays(week, -7))}>‹</button>
+    <button class="icon-btn" aria-label="Предыдущая неделя" onclick={() => (week = addDays(week, -7))}><Icon name="back" /></button>
     <b>{formatDayShort(week)} — {formatDayShort(end)}{isCurrent ? ' (эта)' : ''}</b>
-    <button class="icon-btn" aria-label="Следующая неделя" disabled={isCurrent} onclick={() => (week = addDays(week, 7))}>›</button>
+    <button class="icon-btn" aria-label="Следующая неделя" disabled={isCurrent} onclick={() => (week = addDays(week, 7))}><Icon name="forward" /></button>
   </div>
 
   {#if data.current}

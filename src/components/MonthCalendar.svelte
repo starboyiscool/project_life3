@@ -1,4 +1,5 @@
 <script lang="ts">
+  import Icon from './Icon.svelte';
   import { db } from '../lib/app-db';
   import { live, days, settings } from '../lib/state.svelte';
   import { addDays, weekday, formatDayShort, type Day, WEEKDAYS_SHORT } from '../lib/logic/day';
@@ -53,7 +54,7 @@
   }
 </script>
 <section class="card calendar" aria-label="Календарь задач">
-  <div class="cal-head"><button class="icon-btn" aria-label="Предыдущий месяц" onclick={() => changeMonth(-1)}>‹</button><h2>{monthLabel}</h2><button class="icon-btn" aria-label="Следующий месяц" onclick={() => changeMonth(1)}>›</button></div>
+  <div class="cal-head"><button class="icon-btn" aria-label="Предыдущий месяц" onclick={() => changeMonth(-1)}><Icon name="back" /></button><h2>{monthLabel}</h2><button class="icon-btn" aria-label="Следующий месяц" onclick={() => changeMonth(1)}><Icon name="forward" /></button></div>
   <div class="grid weekdays" aria-hidden="true">{#each WEEKDAYS_SHORT as w (w)}<span>{w}</span>{/each}</div>
   <div class="grid">{#each cells as d, i (i)}<button class="date" class:outside={!d.startsWith(month)} class:selected={d === day} class:today={d === days.today} aria-label={`${d}, задач: ${entries.current.counts[d] ?? 0}, учебных работ: ${entries.current.deadlines[d] ?? 0}`} aria-pressed={d === day} onclick={() => onselect(d)}><span>{Number(d.slice(-2))}</span><span class="count">{#if entries.current.counts[d] || entries.current.deadlines[d]}{entries.current.counts[d] ?? 0}{#if entries.current.deadlines[d]} · У{entries.current.deadlines[d]}{/if}{:else}&nbsp;{/if}</span></button>{/each}</div>
   <p class="muted small">Число — задачи и повторы; «У» — учебные работы. Выберите день для плана.</p>

@@ -30,38 +30,46 @@
     void ensureRecurring(db, planDay);
   });
 
-  const planned = live(
+  // One query per day: the label, the list, leftovers and workouts switch together in one frame.
+  const dayData = live(
     () => {
       const d = planDay;
-      return async () => sortTasks(await tasksForDay(db, d));
+      return async () => {
+        const planned = sortTasks(await tasksForDay(db, d));
+        const unfinished = await leftovers(db, d);
+        const workouts = await db.table<Workout, number>('workouts').where('day').equals(d).toArray();
+        return { day: d, planned, unfinished, workouts };
+      };
     },
-    [] as Task[],
+    { day: '' as Day, planned: [] as Task[], unfinished: [] as Task[], workouts: [] as Workout[] },
   );
-  const unfinished = live(
-    () => {
-      const d = planDay;
-      return () => leftovers(db, d);
-    },
-    [] as Task[],
-  );
+  const planned = { get current() { return dayData.current.planned; } };
+  const unfinished = { get current() { return dayData.current.unfinished; } };
+  const workouts = { get current() { return dayData.current.workouts; } };
+  /** The day whose data is on screen; it changes only when that data has arrived. */
+  const shownDay = $derived(dayData.current.day || planDay);
   const later = live(() => async () => sortTasks(await backlog(db)), [] as Task[]);
 
   const filtered = $derived(planned.current.filter(t => matchesFilter(t.category, filter)));
   const visibleOld = $derived(unfinished.current.filter(t => matchesFilter(t.category, filter)));
-  const workouts = live(() => { const d = planDay; return () => db.table<Workout, number>('workouts').where('day').equals(d).toArray(); }, [] as Workout[]);
   const mitCount = $derived(planned.current.filter((t) => t.isMit).length);
   const totalMin = $derived(totalMinutes(planned.current));
-  const showLeftovers = $derived(planDay > days.today);
+  const showLeftovers = $derived(shownDay > days.today);
 
+  /** Recurring tasks of the day are created before the switch, so the list changes once, not twice. */
+  async function setDay(d: Day) {
+    await ensureRecurring(db, d);
+    planDay = d;
+  }
   function prevDay() {
-    planDay = addDays(planDay, -1);
+    void setDay(addDays(planDay, -1));
   }
   function nextDay() {
-    planDay = addDays(planDay, 1);
+    void setDay(addDays(planDay, 1));
   }
   function onDate(e: Event) {
     const v = (e.currentTarget as HTMLInputElement).value;
-    if (v) planDay = v;
+    if (v) void setDay(v);
   }
 </script>
 
@@ -83,23 +91,23 @@
       <button class:on={filter === 'training'} aria-pressed={filter === 'training'} onclick={() => filter = 'training'}>Тренировки</button>
       <button class:on={filter === 'other'} aria-pressed={filter === 'other'} onclick={() => filter = 'other'}>Дела</button>
     </div>
-    <MonthCalendar day={planDay} {filter} onselect={(d) => planDay = d} />
+    <MonthCalendar day={shownDay} {filter} onselect={(d) => void setDay(d)} />
     {#if filter === 'all' || filter === 'study'}<StudyDayEvents day={planDay} includeWeek={filter === 'study'} />{/if}
     {#if (filter === 'all' || filter === 'training') && workouts.current.length}<section class="card row spread"><span>Тренировок за день: {workouts.current.length}</span><button onclick={() => go('gym', 'history')}>История</button></section>{/if}
     <section class="card stack">
       <div class="daynav">
-        <button class="icon-btn" aria-label="Предыдущий день" onclick={prevDay}>‹</button>
+        <button class="icon-btn" aria-label="Предыдущий день" onclick={prevDay}><Icon name="back" /></button>
         <div class="grow daylabel">
-          <b>{relativeDayLabel(planDay, days.today)}</b>
-          <span class="muted small">{formatDayLong(planDay)}</span>
+          <b>{relativeDayLabel(shownDay, days.today)}</b>
+          <span class="muted small">{formatDayLong(shownDay)}</span>
         </div>
-        <button class="icon-btn" aria-label="Следующий день" onclick={nextDay}>›</button>
+        <button class="icon-btn" aria-label="Следующий день" onclick={nextDay}><Icon name="forward" /></button>
       </div>
 
       <div class="row controls">
-        <input type="date" value={planDay} onchange={onDate} aria-label="Дата" />
-        <button class="chip" class:on={planDay === days.today} onclick={() => (planDay = days.today)}>Сегодня</button>
-        <button class="chip" class:on={planDay === days.tomorrow} onclick={() => (planDay = days.tomorrow)}>Завтра</button>
+        <input type="date" value={shownDay} onchange={onDate} aria-label="Дата" />
+        <button class="chip" class:on={shownDay === days.today} onclick={() => void setDay(days.today)}>Сегодня</button>
+        <button class="chip" class:on={shownDay === days.tomorrow} onclick={() => void setDay(days.tomorrow)}>Завтра</button>
       </div>
 
       <div class="row spread summary">
@@ -116,13 +124,13 @@
         <p class="muted small">Запланировано ≈ {formatEstimate(totalMin)} — это много на один день. Часть можно отправить в бэклог.</p>
       {/if}
 
-      <div class="qa"><QuickAdd day={planDay} initialCategory={filter === 'study' || filter === 'training' ? filter : 'other'} placeholder="Добавить задачу…" /></div>
+      <div class="qa"><QuickAdd day={shownDay} initialCategory={filter === 'study' || filter === 'training' ? filter : 'other'} placeholder="Добавить задачу…" /></div>
     </section>
 
     {#if showLeftovers && visibleOld.length}
       <section class="card stack">
         <h2 class="section-title">Не сделано сегодня и раньше</h2>
-        <Leftovers tasks={visibleOld} target={planDay} targetLabel={relativeDayLabel(planDay, days.today)} />
+        <Leftovers tasks={visibleOld} target={shownDay} targetLabel={relativeDayLabel(shownDay, days.today)} />
       </section>
     {/if}
   </Pane>
@@ -133,8 +141,8 @@
         <div class="item">
           <TaskRow task={t} checkable={false} onedit={(x) => (editing = x)} />
           <div class="row acts">
-            <button class="small" onclick={() => act(() => moveTask(db, t.id!, days.today))}>→ Сегодня</button>
-            <button class="small" onclick={() => act(() => moveTask(db, t.id!, days.tomorrow))}>→ Завтра</button>
+            <button class="small" onclick={() => act(() => moveTask(db, t.id!, days.today))}><Icon name="arrowRight" size={16} /> Сегодня</button>
+            <button class="small" onclick={() => act(() => moveTask(db, t.id!, days.tomorrow))}><Icon name="arrowRight" size={16} /> Завтра</button>
           </div>
         </div>
       {/each}

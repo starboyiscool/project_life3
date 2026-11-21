@@ -1,11 +1,13 @@
 <script lang="ts">
   /** One icon set for the whole app: 24 px grid, 1.6 stroke, round caps (replaces text glyphs). */
-  type Name = 'back' | 'close' | 'star' | 'more' | 'check' | 'up' | 'down' | 'plus' | 'minus';
+  type Name = 'back' | 'close' | 'star' | 'more' | 'check' | 'up' | 'down' | 'plus' | 'minus' | 'forward' | 'arrowRight';
 
   let { name, size = 20, filled = false, label }: { name: Name; size?: number; filled?: boolean; label?: string } = $props();
 
   const PATHS: Record<Exclude<Name, 'more'>, string> = {
     back: 'M15 5l-7 7 7 7',
+    forward: 'M9 5l7 7-7 7',
+    arrowRight: 'M5 12h14M13 6l6 6-6 6',
     close: 'M6 6l12 12M18 6 6 18',
     star: 'M12 3.8l2.5 5.1 5.6.8-4 3.9.9 5.6-5-2.6-5 2.6.9-5.6-4-3.9 5.6-.8z',
     check: 'M5 12.5l4.5 4.5L19 7.5',

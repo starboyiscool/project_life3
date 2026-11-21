@@ -115,7 +115,7 @@
   </div>
   <div class="row">
     <input class="grow" bind:value={query} placeholder="Поиск" aria-label="Поиск" autocomplete="off" />
-    <button class="primary" onclick={() => (tab === 'foods' ? openFood(null) : openDish(null))}>+</button>
+    <button class="primary" onclick={() => (tab === 'foods' ? openFood(null) : openDish(null))}><Icon name="plus" size={18} /></button>
   </div>
 
   <Pane active={tab === 'foods'}>

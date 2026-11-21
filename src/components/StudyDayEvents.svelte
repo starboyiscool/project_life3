@@ -1,4 +1,5 @@
 <script lang="ts">
+  import Icon from './Icon.svelte';
   import { db } from '../lib/app-db';
   import { act, live, settings } from '../lib/state.svelte';
   import { workWeekRange } from '../lib/logic/semester';
@@ -29,6 +30,6 @@
 </script>
 {#if entries.current.length}
 <section class="card stack"><h2 class="section-title">Учебные работы</h2>
- {#each entries.current as entry (entry.work.id)}<div class="row spread"><div class="grow"><b>{entry.work.title}</b><p class="muted small">{entry.subject.name} · {entry.weekOnly ? `${entry.work.deadlineWeek}-я неделя (примерно)` : entry.work.deadlineApproximate ? 'примерная дата' : 'срок'}</p></div><button class="small" onclick={() => add(entry.work, entry.subject)}>+ В план</button></div>{/each}
+ {#each entries.current as entry (entry.work.id)}<div class="row spread"><div class="grow"><b>{entry.work.title}</b><p class="muted small">{entry.subject.name} · {entry.weekOnly ? `${entry.work.deadlineWeek}-я неделя (примерно)` : entry.work.deadlineApproximate ? 'примерная дата' : 'срок'}</p></div><button class="small" onclick={() => add(entry.work, entry.subject)}><Icon name="plus" size={16} /> В план</button></div>{/each}
 </section>
 {/if}

@@ -1,4 +1,5 @@
 <script lang="ts">
+  import Icon from './Icon.svelte';
  import { db } from '../lib/app-db';
  import { act, days, live, settings } from '../lib/state.svelte';
  import { diffDays, formatDayShort } from '../lib/logic/day';
@@ -27,6 +28,6 @@
 </script>
 {#if upcoming.current.length}
 <section class="card stack"><div class="row spread"><h2 class="section-title">Ближайшие сроки · учёба</h2><button class="link small" onclick={() => go('more','study')}>Все</button></div>
- {#each upcoming.current as entry (entry.work.id)}<div class="row spread"><div class="grow"><b>{entry.work.title}</b><p class="muted small">{entry.subject.name} · {entry.label}</p></div><button class="small" onclick={() => add(entry.work,entry.subject)}>+ Сегодня</button></div>{/each}
+ {#each upcoming.current as entry (entry.work.id)}<div class="row spread"><div class="grow"><b>{entry.work.title}</b><p class="muted small">{entry.subject.name} · {entry.label}</p></div><button class="small" onclick={() => add(entry.work,entry.subject)}><Icon name="plus" size={16} /> Сегодня</button></div>{/each}
 </section>
 {/if}

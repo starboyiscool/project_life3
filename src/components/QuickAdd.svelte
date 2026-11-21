@@ -39,7 +39,7 @@
       onclick={() => (isMit = !isMit)}><Icon name="star" size={18} filled={isMit} /></button
     >
     <input bind:this={input} bind:value={title} {placeholder} enterkeyhint="done" autocomplete="off" />
-    <button type="submit" class="primary icon-btn" aria-label="Добавить" disabled={!title.trim()}>+</button>
+    <button type="submit" class="primary icon-btn" aria-label="Добавить" disabled={!title.trim()}><Icon name="plus" size={18} /></button>
   </div>
   {#if title || showCats}
     <div class="chips">

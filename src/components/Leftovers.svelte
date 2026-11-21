@@ -1,4 +1,5 @@
 <script lang="ts">
+  import Icon from './Icon.svelte';
   import TaskRow from './TaskRow.svelte';
   import { moveTask, removeTask } from '../lib/repo/tasks';
   import { db } from '../lib/app-db';
@@ -25,7 +26,7 @@
       <div class="row acts">
         <span class="muted small grow">{formatDayShort(t.day)}</span>
         {#if t.recurringId == null}
-          <button class="small" onclick={() => act(() => moveTask(db, t.id!, target))}>→ {targetLabel}</button>
+          <button class="small" onclick={() => act(() => moveTask(db, t.id!, target))}><Icon name="arrowRight" size={16} /> {targetLabel}</button>
           <button class="small" onclick={() => act(() => moveTask(db, t.id!, ''))}>В бэклог</button>
         {:else}
           <button class="small" onclick={() => act(() => removeTask(db, t))}>Пропустить</button>

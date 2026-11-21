@@ -1,4 +1,5 @@
 <script lang="ts">
+  import Icon from './Icon.svelte';
   import { db } from '../lib/app-db';
   import { act, days, live } from '../lib/state.svelte';
   import { habitDoneDays, listHabits, setHabitDone } from '../lib/repo/habits';
@@ -22,7 +23,7 @@
 
 {#if data.loaded}
   {#if data.current.habits.length === 0}
-    <button class="link small add" onclick={() => go('more', 'habits')}>+ Добавить привычки</button>
+    <button class="link small add" onclick={() => go('more', 'habits')}><Icon name="plus" size={16} /> Добавить привычки</button>
   {:else}
     <div class="chips">
       {#each data.current.habits as h (h.id)}

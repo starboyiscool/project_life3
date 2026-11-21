@@ -56,7 +56,7 @@
           <span class="muted small">Замеров пока нет</span>
         {/if}
       </div>
-      <button class="link" onclick={startEdit}>+ Записать</button>
+      <button class="link" onclick={startEdit}><Icon name="plus" size={16} /> Записать</button>
     </div>
   {:else}
     <form class="row" onsubmit={save}>

@@ -1,4 +1,5 @@
 <script lang="ts">
+  import Icon from '../Icon.svelte';
   import MacroBars from './MacroBars.svelte';
   import AddFood from './AddFood.svelte';
   import EntryEditor from './EntryEditor.svelte';
@@ -75,9 +76,9 @@
 
 <div class="stack">
   <div class="row spread daynav">
-    <button class="icon-btn" aria-label="Предыдущий день" onclick={() => (viewDay = addDays(day, -1))}>‹</button>
+    <button class="icon-btn" aria-label="Предыдущий день" onclick={() => (viewDay = addDays(day, -1))}><Icon name="back" /></button>
     <b>{relativeDayLabel(day, days.today)}</b>
-    <button class="icon-btn" aria-label="Следующий день" disabled={day >= days.today} onclick={() => (viewDay = addDays(day, 1))}>›</button>
+    <button class="icon-btn" aria-label="Следующий день" disabled={day >= days.today} onclick={() => (viewDay = addDays(day, 1))}><Icon name="forward" /></button>
   </div>
 
   <section class="card stack">
@@ -92,7 +93,7 @@
               Ж {Math.round(data.current.obs.avg.f)} · У {Math.round(data.current.obs.avg.c)}
             </span>
           {/if}
-          {#if obsDay > 7}<button class="link small inline" onclick={() => go('food', 'calc')}>Неделя прошла: перейти к расчёту целей →</button>{/if}
+          {#if obsDay > 7}<button class="link small inline" onclick={() => go('food', 'calc')}>Неделя прошла: перейти к расчёту целей <Icon name="arrowRight" size={16} /></button>{/if}
         {:else}
           <span>Режим «Наблюдение»: первую неделю записывай всё, что ешь, без целей. Потом «Расчёт» предложит цели по твоему среднему.</span>
         {/if}
@@ -108,7 +109,7 @@
         <h2 class="section-title">{m}{#if list.length}<span class="num">&nbsp;· {sumMacros(list.map((e) => e.total)).kcal} ккал</span>{/if}</h2>
         <div class="row">
           {#if !list.length && prev.length}<button class="link small" onclick={() => copyMeal(m)}>Как вчера</button>{/if}
-          <button class="icon-btn add" aria-label="Добавить в {m}" onclick={() => (addMeal = m)}>+</button>
+          <button class="icon-btn add" aria-label="Добавить в {m}" onclick={() => (addMeal = m)}><Icon name="plus" size={18} /></button>
         </div>
       </div>
       {#each list as e (e.id)}
@@ -128,7 +129,7 @@
     {#if data.current.prev.length}
       <button onclick={copyDay}>Скопировать предыдущий день ({prevTotal} ккал)</button>
     {/if}
-    <button class="link" onclick={customMeal}>+ Свой приём пищи</button>
+    <button class="link" onclick={customMeal}><Icon name="plus" size={16} /> Свой приём пищи</button>
   </div>
 </div>
 

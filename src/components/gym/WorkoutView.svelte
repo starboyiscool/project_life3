@@ -224,12 +224,12 @@
           <span class="cnt" class:full={it.target && n >= it.target.sets}>{n}{it.target ? `/${it.target.sets}` : ''}</span>
         </button>
       {/each}
-      <button class="chip" onclick={() => (picking = true)}>+ Упражнение</button>
+      <button class="chip" onclick={() => (picking = true)}><Icon name="plus" size={16} /> Упражнение</button>
     </div>
   {:else}
     <div class="card stack">
       <p class="muted">Упражнений пока нет.</p>
-      <button class="primary" onclick={() => (picking = true)}>+ Добавить упражнение</button>
+      <button class="primary" onclick={() => (picking = true)}><Icon name="plus" size={16} /> Добавить упражнение</button>
     </div>
   {/if}
 
@@ -327,7 +327,7 @@
     </section>
 
     {#if idx < workout.items.length - 1}
-      <button onclick={() => (cur = idx + 1)}>Следующее: {gym.name(workout.items[idx + 1].exerciseId)} →</button>
+      <button onclick={() => (cur = idx + 1)}>Следующее: {gym.name(workout.items[idx + 1].exerciseId)} <Icon name="arrowRight" size={16} /></button>
     {/if}
   {/if}
 

@@ -169,7 +169,7 @@
           <span class="section-title">Повторить порцию</span>
           <div class="chips">
             {#each recent.current as r (`${r.food.id}:${r.grams}`)}
-              <button class="quick small" disabled={quickBusy} aria-label="Добавить {r.food.name}, {r.grams} г" onclick={() => quickAddFood(r.food, r.grams)}>+ {r.food.name} · {fmt1(r.grams)} г</button>
+              <button class="quick small" disabled={quickBusy} aria-label="Добавить {r.food.name}, {r.grams} г" onclick={() => quickAddFood(r.food, r.grams)}><Icon name="plus" size={16} /> {r.food.name} · {fmt1(r.grams)} г</button>
             {/each}
           </div>
         {/if}
@@ -184,7 +184,7 @@
             {:else}
               <button class="item" onclick={() => addDish(it.dish)}>
                 <span class="grow name">{#if it.favorite}<Icon name="star" size={14} filled label="избранное" /> {/if}{it.name} <span class="tag">блюдо</span></span>
-                <span class="muted small num">+ {dishAsFood(it.dish.items).total.kcal} ккал</span>
+                <span class="muted small num"><Icon name="plus" size={16} /> {dishAsFood(it.dish.items).total.kcal} ккал</span>
               </button>
             {/if}
           {/each}
@@ -199,7 +199,7 @@
             onclick={() => {
               draft = emptyDraft(query.trim());
               mode = 'new';
-            }}>+ Новый продукт{query.trim() ? ` «${query.trim()}»` : ''}</button
+            }}><Icon name="plus" size={16} /> Новый продукт{query.trim() ? ` «${query.trim()}»` : ''}</button
           >
           <button
             onclick={() => {
