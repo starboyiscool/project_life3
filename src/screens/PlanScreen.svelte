@@ -5,6 +5,7 @@
   import type { Workout } from '../lib/logic/gym';
   import { go } from '../lib/nav.svelte';
   import MonthCalendar from '../components/MonthCalendar.svelte';
+  import Pane from '../components/Pane.svelte';
   import TaskRow from '../components/TaskRow.svelte';
   import QuickAdd from '../components/QuickAdd.svelte';
   import TaskEditor from '../components/TaskEditor.svelte';
@@ -66,7 +67,8 @@
 
 <div class="stack">
   <h1>Календарь</h1>
-  <div class="seg" role="tablist">
+  <div class="seg sliding" role="tablist" style:--n={3} style:--i={['day', 'backlog', 'recurring'].indexOf(seg)}>
+    <span class="plate" aria-hidden="true"></span>
     <button class:on={seg === 'day'} onclick={() => (seg = 'day')}>День</button>
     <button class:on={seg === 'backlog'} onclick={() => (seg = 'backlog')}>
       Бэклог{#if later.current.length}&nbsp;<span class="muted">{later.current.length}</span>{/if}
@@ -74,7 +76,7 @@
     <button class:on={seg === 'recurring'} onclick={() => (seg = 'recurring')}>Повторы</button>
   </div>
 
-  {#if seg === 'day'}
+  <Pane active={seg === 'day'}>
     <div class="filters" role="group" aria-label="Фильтр календаря">
       <button class:on={filter === 'all'} aria-pressed={filter === 'all'} onclick={() => filter = 'all'}>Всё</button>
       <button class:on={filter === 'study'} aria-pressed={filter === 'study'} onclick={() => filter = 'study'}>Учёба</button>
@@ -123,7 +125,8 @@
         <Leftovers tasks={visibleOld} target={planDay} targetLabel={relativeDayLabel(planDay, days.today)} />
       </section>
     {/if}
-  {:else if seg === 'backlog'}
+  </Pane>
+  <Pane active={seg === 'backlog'}>
     <section class="card">
       {#if later.loaded && later.current.length === 0}<p class="muted">Бэклог пуст.</p>{/if}
       {#each later.current as t (t.id)}
@@ -137,9 +140,10 @@
       {/each}
       <div class="qa"><QuickAdd day="" placeholder="В бэклог…" /></div>
     </section>
-  {:else}
+  </Pane>
+  <Pane active={seg === 'recurring'}>
     <RecurringList startDay={planDay} />
-  {/if}
+  </Pane>
 </div>
 
 <TaskEditor task={editing} onclose={() => (editing = null)} />

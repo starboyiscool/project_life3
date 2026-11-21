@@ -82,6 +82,11 @@ body::before {
   display: none !important;
 }
 
+/* Warm panes are positioned inside main, at its width. */
+main {
+  position: relative;
+}
+
 button,
 input,
 select,
@@ -406,3 +411,6 @@ dialog.sheet[open]::backdrop {
 .seg.sliding .plate { position: absolute; top: 4px; bottom: 4px; left: 4px; width: calc((100% - 8px - (var(--n) - 1) * 4px) / var(--n)); border-radius: calc(var(--radius) - 4px); background: var(--surface-2); transform: translateX(calc(var(--i) * (100% + 4px))); transition: transform var(--dur-3) var(--ease-out); }
 .seg.sliding button { position: relative; }
 .seg.sliding button.on { background: transparent; }
+/* The plate is the only highlight: a hover background on the target made it look as if the plate jumped back. */
+.seg.sliding button:not(:disabled):hover { background-color: transparent; border-color: transparent; }
+.seg.sliding button:not(.on):not(:disabled):hover { color: var(--text); }

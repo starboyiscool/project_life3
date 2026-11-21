@@ -10,3 +10,5 @@ build/
 .idea/
 .claude/
 web-dist/
+/stage*/
+/stage6-audit.txt

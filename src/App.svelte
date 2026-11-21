@@ -156,6 +156,16 @@
     font-weight: 700;
   }
 
+  /* The plate is the only highlight; hover changes the colour only. */
+  nav button:not(:disabled):hover {
+    background-color: transparent;
+    border-color: transparent;
+  }
+
+  nav button:not(.active):not(:disabled):hover {
+    color: var(--text);
+  }
+
   @media (max-width: 360px) {
     main { padding-left: 16px; padding-right: 16px; }
     nav button { font-size: var(--fs-xs); }
